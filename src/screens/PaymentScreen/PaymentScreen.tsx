@@ -77,19 +77,19 @@ export const PaymentScreen: React.FC = () => {
     const newErrors: Partial<PaymentCard> = {};
 
     if (!validateCardNumber(cardData.cardNumber)) {
-      newErrors.cardNumber = 'Kart numarası 16 haneli olmalıdır';
+      newErrors.cardNumber = t('payment.validation.cardNumberInvalid');
     }
 
     if (!cardData.cardHolderName.trim()) {
-      newErrors.cardHolderName = 'Kart sahibi adı gerekli';
+      newErrors.cardHolderName = t('payment.validation.cardHolderRequired');
     }
 
     if (!validateExpiry(cardData.expiryMonth, cardData.expiryYear)) {
-      newErrors.expiryMonth = 'Geçerli bir son kullanma tarihi girin';
+      newErrors.expiryMonth = t('payment.validation.expiryInvalid');
     }
 
     if (!validateCVV(cardData.cvv)) {
-      newErrors.cvv = 'CVV 3-4 haneli olmalıdır';
+      newErrors.cvv = t('payment.validation.cvvInvalid');
     }
 
     setErrors(newErrors);
