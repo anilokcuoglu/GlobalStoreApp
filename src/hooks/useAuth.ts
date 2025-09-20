@@ -4,8 +4,10 @@ import { AuthCredentials, RegisterCredentials } from '../types/auth.types';
 import { StorageService } from '../utils/storage';
 
 interface User {
-  id: number;
+  id?: number;
+  email?: string;
   username: string;
+  password: string;
 }
 
 export const useAuthStatus = () => {
@@ -45,8 +47,8 @@ export const useLogin = () => {
       StorageService.setAuthToken(response.token);
 
       const userData: User = {
-        id: 1,
         username: credentials.username,
+        password: credentials.password,
       };
 
       StorageService.setUserData(userData);
@@ -66,43 +68,23 @@ export const useLogin = () => {
   });
 };
 
-// Register mutation
+// Register mutation - Otomatik login yapmıyor
 export const useRegister = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async (credentials: RegisterCredentials) => {
       const response = await authApi.register(credentials);
 
-      const loginResponse = await authApi.login({
-        username: credentials.username,
-        password: credentials.password,
-      });
-
-      StorageService.setAuthToken(loginResponse.token);
-
-      const userData: User = {
+      return {
         id: response.id,
         username: credentials.username,
-      };
-
-      StorageService.setUserData(userData);
-
-      return {
-        token: loginResponse.token,
-        user: userData,
+        email: credentials.email,
       };
     },
     onSuccess: data => {
-      queryClient.setQueryData(['authStatus'], {
-        isAuthenticated: true,
-        user: data.user,
-        token: data.token,
-      });
+      console.log('Registration successful:', data);
     },
   });
 };
-
 export const useLogout = () => {
   const queryClient = useQueryClient();
 

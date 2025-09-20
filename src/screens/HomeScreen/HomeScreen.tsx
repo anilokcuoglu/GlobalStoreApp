@@ -14,20 +14,17 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchProducts, clearError } from '../../store/slices/productsSlice';
 
 export const HomeScreen = () => {
-  // Redux hooks
   const dispatch = useAppDispatch();
-  const { products, loading, error } = useAppSelector((state) => state.products);
+  const { products, loading, error } = useAppSelector(state => state.products);
 
-  // Component mount olduğunda ürünleri getir
   useEffect(() => {
-    dispatch(fetchProducts(10)); // İlk 20 ürünü getir
+    dispatch(fetchProducts());
   }, [dispatch]);
 
-  // // Refresh fonksiyonu
-  // const handleRefresh = () => {
-  //   dispatch(clearError()); // Önceki hataları temizle
-  //   dispatch(fetchProducts(10));
-  // };
+  const handleRefresh = () => {
+    dispatch(clearError());
+    dispatch(fetchProducts());
+  };
 
   const renderProduct = ({ item }: { item: Product }) => (
     <ProductCard
@@ -82,14 +79,14 @@ export const HomeScreen = () => {
       <FlatList
         data={products}
         renderItem={renderProduct}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={item => item.id.toString()}
         ListHeaderComponent={renderHeader}
         numColumns={2}
         contentContainerStyle={styles.listContainer}
         columnWrapperStyle={styles.row}
-        // refreshControl={
-        //   <RefreshControl refreshing={loading} onRefresh={handleRefresh} />
-        // }
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={handleRefresh} />
+        }
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>

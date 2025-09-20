@@ -1,4 +1,3 @@
-// Base API configuration and utilities
 const BASE_URL = 'https://fakestoreapi.com';
 
 export interface ApiRequestOptions extends RequestInit {
@@ -28,6 +27,8 @@ export const apiRequest = async <T>(
     });
 
     if (!response.ok) {
+      console.log(JSON.stringify(response));
+
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 

@@ -121,7 +121,7 @@ export const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
   inputContainer: {
-    marginBottom: spacing.lg,
+    marginBottom: spacing.md,
   },
   inputLabel: {
     fontSize: typography.fontSize.md,
@@ -219,5 +219,61 @@ export const styles = StyleSheet.create({
   },
   gradientOverlay: {
     ...StyleSheet.absoluteFillObject,
+  },
+  button: {
+    marginTop: spacing.sm,
+  },
+
+  mockLoginContainer: {
+    marginBottom: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: colors.neutral.white,
+  },
+  mockLoginTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.neutral.black,
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  mockLoginButton: {
+    backgroundColor: colors.secondary,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 6,
+    marginBottom: 6,
+    alignItems: 'center',
+  },
+  mockLoginButtonText: {
+    color: '#ffffff',
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  passwordInputContainer: {
+    position: 'relative',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordInput: {
+    flex: 1,
+    borderWidth: 2,
+    borderColor: colors.neutral[200],
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    paddingRight: 50, // Toggle button için space
+    fontSize: typography.fontSize.md,
+    color: colors.neutral[800],
+    backgroundColor: colors.neutral.white,
+  },
+  passwordToggle: {
+    position: 'absolute',
+    right: 12,
+    padding: 4,
+    top: 44,
+  },
+  passwordToggleText: {
+    fontSize: 18,
   },
 });

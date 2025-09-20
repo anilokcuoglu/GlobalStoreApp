@@ -7,8 +7,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import { Typography } from '../../components';
 import { useAuth } from '../../hooks/useAuth';
@@ -17,18 +17,21 @@ import { styles } from './AuthScreen.styles';
 import PrimaryButton from '../../components/molecules/PrimaryButton/PrimaryButton';
 import GradientText from '../../components/molecules/GradientText/GradientText';
 import SegmentedControl from '../../components/molecules/SegmentedControl/SegmentedControl';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const AuthScreen = () => {
+  const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
-  const [_showPassword, _setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginData, setLoginData] = useState({
+    username: '',
+    password: '',
+  });
 
-  // Login form state
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  // Register form state
   const [registerData, setRegisterData] = useState({
+    id: 0,
+    email: '',
     username: '',
     password: '',
     confirmPassword: '',
@@ -37,19 +40,31 @@ export const AuthScreen = () => {
   const { login, register, error, isLoginLoading, isRegisterLoading } =
     useAuth();
 
-  // Clear error when inputs change - TanStack Query otomatik handle eder
-  useEffect(() => {
-    // Error otomatik temizlenir yeni mutation başladığında
-  }, [username, password]);
+  useEffect(() => {}, [loginData.username, loginData.password]);
+
+  const mockUsers = [
+    { username: 'mor_2314', password: '83r5^_', name: 'Test User 1' },
+  ];
+
+  const handleMockLogin = (user: (typeof mockUsers)[0]) => {
+    setLoginData({
+      username: user.username,
+      password: user.password,
+    });
+    Alert.alert('Auto Fill', `${user.name} bilgileri dolduruldu!`);
+  };
 
   const handleLogin = async () => {
-    if (!username.trim() || !password.trim()) {
+    if (!loginData.username.trim() || !loginData.password.trim()) {
       Alert.alert('Hata', 'Lütfen kullanıcı adı ve şifrenizi giriniz.');
       return;
     }
 
     try {
-      await login({ username: username.trim(), password: password.trim() });
+      await login({
+        username: loginData.username.trim(),
+        password: loginData.password.trim(),
+      });
       // Navigation will be handled by the navigation logic
     } catch (err: any) {
       Alert.alert(
@@ -60,7 +75,6 @@ export const AuthScreen = () => {
   };
 
   const handleRegister = async () => {
-    // Basit validasyon
     if (!registerData.username.trim() || !registerData.password.trim()) {
       Alert.alert('Hata', 'Lütfen tüm zorunlu alanları doldurunuz.');
       return;
@@ -76,11 +90,40 @@ export const AuthScreen = () => {
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(registerData.email)) {
+      Alert.alert('Hata', 'Geçerli bir email adresi giriniz.');
+      return;
+    }
+
     try {
       await register({
+        id: registerData.id,
+        email: registerData.email.trim(),
         username: registerData.username.trim(),
         password: registerData.password.trim(),
       });
+
+      // Register başarılı olduğunda login tab'ına geç
+      Alert.alert(
+        'Kayıt Başarılı!',
+        'Hesabınız oluşturuldu. Şimdi giriş yapabilirsiniz.',
+        [
+          {
+            text: 'Tamam',
+            onPress: () => {
+              setActiveTab('login');
+              setRegisterData({
+                id: 0,
+                email: '',
+                username: '',
+                password: '',
+                confirmPassword: '',
+              });
+            },
+          },
+        ],
+      );
     } catch (err: any) {
       Alert.alert(
         'Kayıt Başarısız',
@@ -97,9 +140,7 @@ export const AuthScreen = () => {
       style={styles.backgroundImage}
       resizeMode="cover"
     >
-      <SafeAreaView
-        style={[styles.container, { backgroundColor: 'rgba(0,0,0,0.15)' }]}
-      >
+      <View style={[styles.container, { paddingTop: insets.top }]}>
         <LinearGradient
           colors={['transparent', 'rgba(0,0,0,0.99)']}
           locations={[0.4, 1.0]}
@@ -111,7 +152,10 @@ export const AuthScreen = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           <ScrollView
-            contentContainerStyle={styles.scrollContainer}
+            contentContainerStyle={[
+              styles.scrollContainer,
+              { paddingBottom: insets.bottom },
+            ]}
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
           >
@@ -151,6 +195,28 @@ export const AuthScreen = () => {
                 {activeTab === 'login' ? 'Hoş Geldiniz' : 'Hesap Oluşturun'}
               </Typography>
 
+              {activeTab === 'login' && (
+                <View style={styles.mockLoginContainer}>
+                  <Typography variant="body" style={styles.mockLoginTitle}>
+                    Doğrudan giriş yapabilirsiniz:
+                  </Typography>
+                  {mockUsers.map((user: any, index: any) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={styles.mockLoginButton}
+                      onPress={() => handleMockLogin(user)}
+                    >
+                      <Typography
+                        variant="body"
+                        style={styles.mockLoginButtonText}
+                      >
+                        {user.name} ({user.username})
+                      </Typography>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+
               {activeTab === 'login' ? (
                 <>
                   {/* Login Form */}
@@ -159,14 +225,17 @@ export const AuthScreen = () => {
                     <Typography variant="body" style={styles.inputLabel}>
                       Kullanıcı Adı
                     </Typography>
+
                     <TextInput
                       style={[
                         styles.input,
                         focusedInput === 'username' && styles.inputFocused,
                         error && styles.inputError,
                       ]}
-                      value={username}
-                      onChangeText={setUsername}
+                      value={loginData.username}
+                      onChangeText={text =>
+                        setLoginData(prev => ({ ...prev, username: text }))
+                      }
                       onFocus={() => setFocusedInput('username')}
                       onBlur={() => setFocusedInput(null)}
                       placeholder="Kullanıcı adınızı giriniz"
@@ -182,23 +251,33 @@ export const AuthScreen = () => {
                     <Typography variant="body" style={styles.inputLabel}>
                       Şifre
                     </Typography>
-                    <TextInput
-                      style={[
-                        styles.input,
-                        focusedInput === 'password' && styles.inputFocused,
-                        error && styles.inputError,
-                      ]}
-                      value={password}
-                      onChangeText={setPassword}
-                      onFocus={() => setFocusedInput('password')}
-                      onBlur={() => setFocusedInput(null)}
-                      placeholder="Şifrenizi giriniz"
-                      placeholderTextColor={colors.neutral[400]}
-                      secureTextEntry={!_showPassword}
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      editable={!isLoginLoading}
-                    />
+                      <TextInput
+                        style={[
+                          styles.input,
+                          focusedInput === 'password' && styles.inputFocused,
+                          error && styles.inputError,
+                        ]}
+                        value={loginData.password}
+                        onChangeText={text =>
+                          setLoginData(prev => ({ ...prev, password: text }))
+                        }
+                        onFocus={() => setFocusedInput('password')}
+                        onBlur={() => setFocusedInput(null)}
+                        placeholder="Şifrenizi giriniz"
+                        placeholderTextColor={colors.neutral[400]}
+                        secureTextEntry={!showPassword}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        editable={!isLoginLoading}
+                      />
+                      <TouchableOpacity
+                        style={styles.passwordToggle}
+                        onPress={() => setShowPassword(prev => !prev)}
+                      >
+                        <Typography variant="body" style={styles.passwordToggleText}>
+                          {showPassword ? '🙈' : '👁️'}
+                        </Typography>
+                      </TouchableOpacity>
                     {error && (
                       <Typography variant="caption" style={styles.errorText}>
                         {error}
@@ -235,6 +314,30 @@ export const AuthScreen = () => {
 
                   <View style={styles.inputContainer}>
                     <Typography variant="body" style={styles.inputLabel}>
+                      Email
+                    </Typography>
+                    <TextInput
+                      style={[
+                        styles.input,
+                        focusedInput === 'email' && styles.inputFocused,
+                        error && styles.inputError,
+                      ]}
+                      value={registerData.email}
+                      onChangeText={text =>
+                        setRegisterData(prev => ({ ...prev, email: text }))
+                      }
+                      onFocus={() => setFocusedInput('email')}
+                      onBlur={() => setFocusedInput(null)}
+                      placeholder="Emailinizi giriniz"
+                      placeholderTextColor={colors.neutral[400]}
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      editable={!isLoginLoading}
+                    />
+                  </View>
+
+                  <View style={styles.inputContainer}>
+                    <Typography variant="body" style={styles.inputLabel}>
                       Şifre *
                     </Typography>
                     <TextInput
@@ -251,11 +354,22 @@ export const AuthScreen = () => {
                       onBlur={() => setFocusedInput(null)}
                       placeholder="Şifrenizi giriniz (min 6 karakter)"
                       placeholderTextColor={colors.neutral[400]}
-                      secureTextEntry={!_showPassword}
+                      secureTextEntry={!showPassword}
                       autoCapitalize="none"
                       autoCorrect={false}
                       editable={!isRegisterLoading}
                     />
+                    <TouchableOpacity
+                      style={styles.passwordToggle}
+                      onPress={() => setShowPassword(prev => !prev)}
+                    >
+                      <Typography
+                        variant="body"
+                        style={styles.passwordToggleText}
+                      >
+                        {showPassword ? '🙈' : '👁️'}
+                      </Typography>
+                    </TouchableOpacity>
                   </View>
 
                   <View style={styles.inputContainer}>
@@ -283,11 +397,19 @@ export const AuthScreen = () => {
                       onBlur={() => setFocusedInput(null)}
                       placeholder="Şifrenizi tekrar giriniz"
                       placeholderTextColor={colors.neutral[400]}
-                      secureTextEntry={!_showPassword}
+                      secureTextEntry={!showPassword}
                       autoCapitalize="none"
                       autoCorrect={false}
                       editable={!isRegisterLoading}
                     />
+                    <TouchableOpacity
+                      style={styles.passwordToggle}
+                      onPress={() => setShowPassword(prev => !prev)}
+                    >
+                      <Typography variant="body" style={styles.passwordToggleText}>
+                        {showPassword ? '🙈' : '👁️'}
+                      </Typography>
+                    </TouchableOpacity>
                     {registerData.password !== registerData.confirmPassword &&
                       registerData.confirmPassword.length > 0 && (
                         <Typography variant="caption" style={styles.errorText}>
@@ -308,7 +430,9 @@ export const AuthScreen = () => {
                 title={activeTab === 'login' ? 'Giriş Yap' : 'Hesap Oluştur'}
                 disabled={
                   activeTab === 'login'
-                    ? isLoginLoading || !username.trim() || !password.trim()
+                    ? isLoginLoading ||
+                      !loginData.username.trim() ||
+                      !loginData.password.trim()
                     : isRegisterLoading ||
                       !registerData.username.trim() ||
                       !registerData.password.trim() ||
@@ -318,11 +442,12 @@ export const AuthScreen = () => {
                   activeTab === 'login' ? isLoginLoading : isRegisterLoading
                 }
                 onPress={activeTab === 'login' ? handleLogin : handleRegister}
+                style={styles.button}
               />
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-      </SafeAreaView>
+      </View>
     </ImageBackground>
   );
 };

@@ -4,7 +4,9 @@ export interface AuthCredentials {
 }
 
 export interface RegisterCredentials {
+  id: number;
   username: string;
+  email: string;
   password: string;
 }
 
@@ -14,4 +16,7 @@ export interface AuthResponse {
 
 export interface RegisterResponse {
   id: number;
+  username: string;
+  email: string;
+  password: string;
 }
