@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { Typography } from '../../components';
 import PrimaryButton from '../../components/molecules/PrimaryButton/PrimaryButton';
 import { colors } from '../../constants/theme';
@@ -18,6 +19,7 @@ import { User } from '../../types/user.types';
 import { styles } from './PersonalInfoScreen.styles';
 
 export const PersonalInfoScreen: React.FC = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const { user: currentUser } = useAuth();
@@ -143,7 +145,7 @@ export const PersonalInfoScreen: React.FC = () => {
           </Typography>
         </TouchableOpacity>
         <Typography variant="h3" style={styles.headerTitle}>
-          Kişisel Bilgiler
+          {t('personalInfo.title')}
         </Typography>
         <View style={styles.headerSpacer} />
       </View>
@@ -155,7 +157,7 @@ export const PersonalInfoScreen: React.FC = () => {
         <View style={styles.formContainer}>
           <View style={styles.section}>
             <Typography variant="h3" style={styles.sectionTitle}>
-              Kişisel Bilgiler
+              {t('personalInfo.title')}
             </Typography>
 
             <View style={styles.inputGroup}>
@@ -164,7 +166,7 @@ export const PersonalInfoScreen: React.FC = () => {
               </Typography>
               <TextInput
                 style={[styles.input, errors.username && styles.inputError]}
-                placeholder="Kullanıcı adınızı girin"
+                placeholder={t('personalInfo.usernamePlaceholder')}
                 value={userData.username || ''}
                 onChangeText={text => handleInputChange('username', text)}
                 autoCapitalize="none"
@@ -179,11 +181,11 @@ export const PersonalInfoScreen: React.FC = () => {
 
             <View style={styles.inputGroup}>
               <Typography variant="caption" style={styles.label}>
-                E-posta
+                {t('personalInfo.email')}
               </Typography>
               <TextInput
                 style={[styles.input, errors.email && styles.inputError]}
-                placeholder="ornek@email.com"
+                placeholder={t('personalInfo.emailPlaceholder')}
                 value={userData.email || ''}
                 onChangeText={text => handleInputChange('email', text)}
                 keyboardType="email-address"
@@ -199,11 +201,11 @@ export const PersonalInfoScreen: React.FC = () => {
 
             <View style={styles.inputGroup}>
               <Typography variant="caption" style={styles.label}>
-                Şifre
+                {t('personalInfo.password')}
               </Typography>
               <TextInput
                 style={[styles.input, errors.password && styles.inputError]}
-                placeholder="Yeni şifrenizi girin"
+                placeholder={t('personalInfo.passwordPlaceholder')}
                 value={userData.password || ''}
                 onChangeText={text => handleInputChange('password', text)}
                 secureTextEntry
@@ -220,7 +222,7 @@ export const PersonalInfoScreen: React.FC = () => {
 
           <View style={styles.buttonContainer}>
             <PrimaryButton
-              title={isLoading ? 'Güncelleniyor...' : 'Bilgileri Güncelle'}
+              title={isLoading ? t('personalInfo.updating') : t('personalInfo.update')}
               onPress={handleUpdate}
               disabled={isLoading}
               style={[styles.updateButton, isLoading && styles.disabledButton]}
@@ -234,7 +236,7 @@ export const PersonalInfoScreen: React.FC = () => {
           <View style={styles.loadingCard}>
             <ActivityIndicator size="large" color={colors.primary} />
             <Typography variant="body" style={styles.loadingText}>
-              Bilgiler güncelleniyor...
+              {t('personalInfo.updating')}
             </Typography>
           </View>
         </View>
