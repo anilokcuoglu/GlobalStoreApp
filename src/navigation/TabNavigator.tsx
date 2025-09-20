@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTranslation } from 'react-i18next';
 import { CartScreen, HomeScreen, ProfileScreen } from '../screens';
 import { useAppSelector } from '../store/hooks';
+import { colors } from '../constants/theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,15 +16,21 @@ export const TabNavigator = () => {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#007AFF',
+        tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: '#8E8E93',
         tabBarStyle: {
           backgroundColor: '#FFFFFF',
           borderTopWidth: 1,
-          borderTopColor: '#E5E5EA',
           paddingBottom: 8,
           paddingTop: 8,
           height: 88,
+          shadowColor: colors.secondary_gray,
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
         },
         tabBarLabelStyle: {
           fontSize: 12,
