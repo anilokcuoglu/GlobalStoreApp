@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import BottomSheet, { BottomSheetScrollView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useQuery } from '@tanstack/react-query';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -16,6 +17,7 @@ import { usersApi } from '../../services/api/users';
 import { styles } from './CartScreen.styles';
 
 export const CartScreen = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { items, total, itemCount } = useAppSelector(state => state.cart);
@@ -66,8 +68,8 @@ export const CartScreen = () => {
 
   const handleRemoveItem = (productId: number, productTitle: string) => {
     Alert.alert(
-      'Ürünü Kaldır',
-      `${productTitle} ürününü sepetten kaldırmak istediğinizden emin misiniz?`,
+      t('cart.removeProduct'),
+      `${productTitle} ${t('cart.removeProductConfirm')}`,
       [
         { text: 'İptal', style: 'cancel' },
         { text: 'Kaldır', style: 'destructive', onPress: () => dispatch(removeFromCart(productId)) },
@@ -77,8 +79,8 @@ export const CartScreen = () => {
 
   const handleClearCart = () => {
     Alert.alert(
-      'Sepeti Temizle',
-      'Tüm ürünleri sepetten kaldırmak istediğinizden emin misiniz?',
+      t('cart.clearCart'),
+      t('cart.clearCartConfirm'),
       [
         { text: 'İptal', style: 'cancel' },
         { text: 'Temizle', style: 'destructive', onPress: () => dispatch(clearCart()) },
@@ -88,13 +90,13 @@ export const CartScreen = () => {
 
   const handleCheckout = () => {
     if (itemCount === 0) {
-      Alert.alert('Uyarı', 'Sepetinizde ürün bulunmuyor.');
+      Alert.alert(t('cart.warning'), t('cart.emptyCartWarning'));
       return;
     }
 
     Alert.alert(
-      'Sipariş Ver',
-      `Toplam ${itemCount} ürün için $${total.toFixed(2)} ödeme yapmak istediğinizden emin misiniz?`,
+      t('cart.placeOrder'),
+      `${itemCount} ${t('cart.placeOrderConfirm').replace('$', total.toFixed(2))}`,
       [
         { text: 'İptal', style: 'cancel' },
         { text: 'Ödeme Yap', onPress: () => {
@@ -109,21 +111,21 @@ export const CartScreen = () => {
   
   const handleGiftToUser = () => {
     if (!selectedUser) {
-      Alert.alert('Uyarı', 'Lütfen hediye edilecek kullanıcıyı seçin.');
+      Alert.alert(t('cart.warning'), t('cart.selectUserWarning'));
       return;
     }
     
     Alert.alert(
-      'Hediye Et',
-      `Sepetinizi ${selectedUser.username} kullanıcısına hediye etmek istediğinizden emin misiniz?`,
+      t('cart.gift'),
+      t('cart.giftConfirm').replace('user', selectedUser.username),
       [
         { text: 'İptal', style: 'cancel' },
         { text: 'Hediye Et', onPress: () => {
           // Fake loading delay
           setTimeout(() => {
             Alert.alert(
-              '🎉 Başarılı!', 
-              `Sepetiniz ${selectedUser.username} kullanıcısına hediye edildi!\n\nHediye paketi kullanıcıya gönderildi.`,
+              '🎉 ' + t('common.success'), 
+              t('cart.giftSuccessMessage').replace('user', selectedUser.username) + '\n\n' + t('cart.giftPackageSent'),
               [
                 { 
                   text: 'Harika!', 
@@ -202,10 +204,10 @@ export const CartScreen = () => {
   const renderEmptyCart = () => (
     <View style={styles.emptyContainer}>
       <Typography variant="h2" style={styles.emptyTitle}>
-        Sepetiniz Boş
+        {t('cart.empty')}
       </Typography>
       <Typography variant="body" style={styles.emptyText}>
-        Henüz sepetinize ürün eklemediniz. Ürünleri keşfetmek için ana sayfaya dönün.
+        {t('cart.emptyMessage')}
       </Typography>
     </View>
   );
@@ -213,12 +215,12 @@ export const CartScreen = () => {
   const renderHeader = () => (
     <View style={styles.header}>
       <Typography variant="h1" style={styles.title}>
-        Sepetim
+        {t('cart.title')}
       </Typography>
       {itemCount > 0 && (
         <TouchableOpacity style={styles.clearButton} onPress={handleClearCart}>
           <Typography variant="body" style={styles.clearButtonText}>
-            Temizle
+            {t('cart.clearAll')}
           </Typography>
         </TouchableOpacity>
       )}
@@ -233,16 +235,16 @@ export const CartScreen = () => {
         <View style={styles.totalContainer}>
           <View style={styles.totalRow}>
             <Typography variant="body" style={styles.totalLabel}>
-              Toplam Ürün:
+              {t('cart.total')}:
             </Typography>
             <Typography variant="body" style={styles.totalValue}>
-              {itemCount} adet
+              {itemCount} {t('product.quantity')}
             </Typography>
           </View>
           
           <View style={styles.totalRow}>
             <Typography variant="h2" style={styles.totalLabel}>
-              Toplam Tutar:
+              {t('cart.totalAmount')}:
             </Typography>
             <Typography variant="h1" style={styles.totalAmount}>
               ${total.toFixed(2)}
@@ -253,13 +255,13 @@ export const CartScreen = () => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.giftButton} onPress={openGiftSheet}>
             <Typography variant="body" style={styles.giftButtonText}>
-              🎁 Hediye Et
+              🎁 {t('cart.gift')}
             </Typography>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
             <Typography variant="body" style={styles.checkoutButtonText}>
-              Sipariş Ver
+              {t('cart.checkout')}
             </Typography>
           </TouchableOpacity>
         </View>
@@ -299,13 +301,13 @@ export const CartScreen = () => {
           contentContainerStyle={styles.bottomSheetScrollContent}
         >
           <Typography variant="h2" style={styles.bottomSheetTitle}>
-            Kullanıcı Seç
+            {t('cart.giftTo')}
           </Typography>
           
           <View style={styles.usersList}>
             {isLoadingUsers ? (
               <Typography variant="body" style={styles.loadingText}>
-                Kullanıcılar yükleniyor...
+                {t('common.loading')}
               </Typography>
             ) : (
               users.map((user) => (
@@ -341,7 +343,7 @@ export const CartScreen = () => {
           <View style={styles.bottomSheetActions}>
             <TouchableOpacity style={styles.cancelButton} onPress={closeGiftSheet}>
               <Typography variant="body" style={styles.cancelButtonText}>
-                İptal
+                {t('common.cancel')}
               </Typography>
             </TouchableOpacity>
             
@@ -351,7 +353,7 @@ export const CartScreen = () => {
               disabled={!selectedUser}
             >
               <Typography variant="body" style={styles.giftConfirmButtonText}>
-                Hediye Et
+                {t('cart.gift')}
               </Typography>
             </TouchableOpacity>
           </View>

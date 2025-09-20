@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '../../store/hooks';
 import { clearCart } from '../../store/slices/cartSlice';
 import { Typography } from '../../components';
@@ -19,6 +20,7 @@ import { StorageService } from '../../utils/storage';
 import { styles } from './PaymentScreen.styles';
 
 export const PaymentScreen: React.FC = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
   const insets = useSafeAreaInsets();
@@ -103,7 +105,7 @@ export const PaymentScreen: React.FC = () => {
 
   const handlePayment = async () => {
     if (!validateForm()) {
-      Alert.alert('Hata', 'Lütfen tüm alanları doğru şekilde doldurun.');
+      Alert.alert(t('common.error'), 'Lütfen tüm alanları doğru şekilde doldurun.');
       return;
     }
 
@@ -145,8 +147,8 @@ export const PaymentScreen: React.FC = () => {
 
       // Show success message
       Alert.alert(
-        '🎉 Ödeme Başarılı!',
-        `Siparişiniz başarıyla oluşturuldu.\n\nTutar: $${totalAmount.toFixed(2)}\n\nSipariş numaranız: ${orderNumber}`,
+        '🎉 ' + t('payment.success'),
+        `${t('payment.successMessage')}\n\nTutar: $${totalAmount.toFixed(2)}\n\nSipariş numaranız: ${orderNumber}`,
         [
           {
             text: 'Tamam',
@@ -159,7 +161,7 @@ export const PaymentScreen: React.FC = () => {
         ]
       );
     } catch (error) {
-      Alert.alert('Hata', 'Ödeme işlemi sırasında bir hata oluştu.');
+      Alert.alert(t('common.error'), t('payment.error'));
     } finally {
       setIsProcessing(false);
     }
@@ -189,7 +191,7 @@ export const PaymentScreen: React.FC = () => {
           <Typography variant="body" style={styles.backIcon}>←</Typography>
         </TouchableOpacity>
         <Typography variant="h3" style={styles.headerTitle}>
-          Ödeme
+          {t('payment.title')}
         </Typography>
         <View style={styles.headerSpacer} />
       </View>
@@ -197,10 +199,10 @@ export const PaymentScreen: React.FC = () => {
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Typography variant="h1" style={styles.title}>
-            Ödeme
+            {t('payment.title')}
           </Typography>
           <Typography variant="body" style={styles.subtitle}>
-            Sipariş tutarı: ${totalAmount.toFixed(2)}
+            {t('payment.orderAmount')}: ${totalAmount.toFixed(2)}
           </Typography>
         </View>
 
@@ -208,18 +210,18 @@ export const PaymentScreen: React.FC = () => {
           <View style={styles.card}>
             <View style={styles.cardHeader}>
               <Typography variant="h3" style={styles.cardTitle}>
-                Kredi Kartı Bilgileri
+                {t('payment.cardInfo')}
               </Typography>
             </View>
 
             <View style={styles.form}>
               <View style={styles.inputGroup}>
                 <Typography variant="caption" style={styles.label}>
-                  Kart Numarası
+                  {t('payment.cardNumber')}
                 </Typography>
                 <TextInput
                   style={[styles.input, errors.cardNumber && styles.inputError]}
-                  placeholder="1234 5678 9012 3456"
+                  placeholder={t('payment.cardNumberPlaceholder')}
                   value={cardData.cardNumber}
                   onChangeText={(text) => handleInputChange('cardNumber', text)}
                   keyboardType="numeric"
@@ -235,11 +237,11 @@ export const PaymentScreen: React.FC = () => {
 
               <View style={styles.inputGroup}>
                 <Typography variant="caption" style={styles.label}>
-                  Kart Sahibi Adı
+                  {t('payment.cardHolder')}
                 </Typography>
                 <TextInput
                   style={[styles.input, errors.cardHolderName && styles.inputError]}
-                  placeholder="JOHN DOE"
+                  placeholder={t('payment.cardHolderPlaceholder')}
                   value={cardData.cardHolderName}
                   onChangeText={(text) => handleInputChange('cardHolderName', text.toUpperCase())}
                   autoCapitalize="characters"
@@ -256,12 +258,12 @@ export const PaymentScreen: React.FC = () => {
               <View style={styles.row}>
                 <View style={[styles.inputGroup, styles.halfWidth]}>
                   <Typography variant="caption" style={styles.label}>
-                    Son Kullanma Tarihi
+                    {t('payment.expiryDate')}
                   </Typography>
                   <View style={styles.expiryContainer}>
                     <TextInput
                       style={[styles.input, styles.expiryInput, errors.expiryMonth && styles.inputError]}
-                      placeholder="MM"
+                      placeholder={t('payment.monthPlaceholder')}
                       value={cardData.expiryMonth}
                       onChangeText={(text) => handleInputChange('expiryMonth', text.replace(/[^0-9]/g, '').slice(0, 2))}
                       keyboardType="numeric"
@@ -273,7 +275,7 @@ export const PaymentScreen: React.FC = () => {
                     </Typography>
                     <TextInput
                       style={[styles.input, styles.expiryInput, errors.expiryMonth && styles.inputError]}
-                      placeholder="YY"
+                      placeholder={t('payment.yearPlaceholder')}
                       value={cardData.expiryYear}
                       onChangeText={(text) => handleInputChange('expiryYear', text.replace(/[^0-9]/g, '').slice(0, 2))}
                       keyboardType="numeric"
@@ -290,11 +292,11 @@ export const PaymentScreen: React.FC = () => {
 
                 <View style={[styles.inputGroup, styles.halfWidth]}>
                   <Typography variant="caption" style={styles.label}>
-                    CVV
+                    {t('payment.cvv')}
                   </Typography>
                   <TextInput
                     style={[styles.input, errors.cvv && styles.inputError]}
-                    placeholder="123"
+                    placeholder={t('payment.cvvPlaceholder')}
                     value={cardData.cvv}
                     onChangeText={(text) => handleInputChange('cvv', text.replace(/[^0-9]/g, '').slice(0, 4))}
                     keyboardType="numeric"
@@ -316,22 +318,22 @@ export const PaymentScreen: React.FC = () => {
         <View style={styles.summaryContainer}>
           <View style={styles.summaryCard}>
             <Typography variant="h3" style={styles.summaryTitle}>
-              Sipariş Özeti
+              {t('payment.orderSummary')}
             </Typography>
             <View style={styles.summaryRow}>
-              <Typography variant="body">Ürün Sayısı:</Typography>
+              <Typography variant="body">{t('orders.productCount')}:</Typography>
               <Typography variant="body" style={styles.summaryValue}>
-                {cartItems.length} adet
+                {cartItems.length} {t('product.quantity')}
               </Typography>
             </View>
             <View style={styles.summaryRow}>
-              <Typography variant="body">Kargo:</Typography>
+              <Typography variant="body">{t('payment.shipping')}:</Typography>
               <Typography variant="body" style={styles.summaryValue}>
-                Ücretsiz
+                {t('payment.freeShipping')}
               </Typography>
             </View>
             <View style={[styles.summaryRow, styles.totalRow]}>
-              <Typography variant="h3">Toplam:</Typography>
+              <Typography variant="h3">{t('payment.total')}:</Typography>
               <Typography variant="h3" style={styles.totalAmount}>
                 ${totalAmount.toFixed(2)}
               </Typography>
@@ -341,7 +343,7 @@ export const PaymentScreen: React.FC = () => {
 
         <View style={styles.buttonContainer}>
           <PrimaryButton
-            title={isProcessing ? 'İşleniyor...' : 'Ödemeyi Tamamla'}
+            title={isProcessing ? t('payment.processing') : t('payment.completePayment')}
             onPress={handlePayment}
             disabled={isProcessing || !isFormValid()}
             style={[

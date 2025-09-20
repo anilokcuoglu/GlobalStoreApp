@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import { Typography } from '../../components';
 import { useAuth } from '../../hooks/useAuth';
 import { colors } from '../../constants/theme';
@@ -20,6 +21,7 @@ import SegmentedControl from '../../components/molecules/SegmentedControl/Segmen
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const AuthScreen = () => {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
@@ -51,12 +53,12 @@ export const AuthScreen = () => {
       username: user.username,
       password: user.password,
     });
-    Alert.alert('Auto Fill', `${user.name} bilgileri dolduruldu!`);
+    Alert.alert(t('auth.autoFill'), `${user.name} ${t('auth.autoFillMessage')}`);
   };
 
   const handleLogin = async () => {
     if (!loginData.username.trim() || !loginData.password.trim()) {
-      Alert.alert('Hata', 'Lütfen kullanıcı adı ve şifrenizi giriniz.');
+      Alert.alert(t('common.error'), t('auth.loginError'));
       return;
     }
 
@@ -68,31 +70,31 @@ export const AuthScreen = () => {
       // Navigation will be handled by the navigation logic
     } catch (err: any) {
       Alert.alert(
-        'Giriş Başarısız',
-        err.message || 'Kullanıcı adı veya şifre hatalı.',
+        t('auth.loginFailed'),
+        err.message || t('auth.loginFailedMessage'),
       );
     }
   };
 
   const handleRegister = async () => {
     if (!registerData.username.trim() || !registerData.password.trim()) {
-      Alert.alert('Hata', 'Lütfen tüm zorunlu alanları doldurunuz.');
+      Alert.alert(t('common.error'), t('auth.registerError'));
       return;
     }
 
     if (registerData.password !== registerData.confirmPassword) {
-      Alert.alert('Hata', 'Şifreler eşleşmiyor.');
+      Alert.alert(t('common.error'), t('auth.passwordMismatch'));
       return;
     }
 
     if (registerData.password.length < 6) {
-      Alert.alert('Hata', 'Şifre en az 6 karakter olmalıdır.');
+      Alert.alert(t('common.error'), t('auth.passwordMinError'));
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(registerData.email)) {
-      Alert.alert('Hata', 'Geçerli bir email adresi giriniz.');
+      Alert.alert(t('common.error'), t('auth.emailInvalid'));
       return;
     }
 
@@ -106,11 +108,11 @@ export const AuthScreen = () => {
 
       // Register başarılı olduğunda login tab'ına geç
       Alert.alert(
-        'Kayıt Başarılı!',
-        'Hesabınız oluşturuldu. Şimdi giriş yapabilirsiniz.',
+        t('auth.registerSuccess'),
+        t('auth.registerSuccessMessage'),
         [
           {
-            text: 'Tamam',
+            text: t('auth.ok'),
             onPress: () => {
               setActiveTab('login');
               setRegisterData({
@@ -126,8 +128,8 @@ export const AuthScreen = () => {
       );
     } catch (err: any) {
       Alert.alert(
-        'Kayıt Başarısız',
-        err.message || 'Kayıt işlemi sırasında bir hata oluştu.',
+        t('auth.registerFailed'),
+        err.message || t('auth.registerFailedMessage'),
       );
     }
   };
@@ -167,7 +169,7 @@ export const AuthScreen = () => {
                 locations={[0, 1]}
                 style={styles.appName}
               >
-                Global Store
+                {t('auth.appName')}
               </GradientText>
               <GradientText
                 colors={[colors.primary, colors.secondary]}
@@ -176,14 +178,14 @@ export const AuthScreen = () => {
                 locations={[0, 1]}
                 style={styles.appSubtitle}
               >
-                Discover amazing products worldwide
+                {t('auth.appSubtitle')}
               </GradientText>
             </View>
 
             <View style={styles.formContainer}>
               <View style={styles.tabContainer}>
                 <SegmentedControl
-                  options={['Giriş Yap', 'Kayıt Ol']}
+                  options={[t('auth.login'), t('auth.register')]}
                   onValueChange={(value, index) => {
                     setActiveTab(index === 0 ? 'login' : 'register');
                   }}
@@ -192,13 +194,13 @@ export const AuthScreen = () => {
               </View>
 
               <Typography variant="h2" style={styles.formTitle}>
-                {activeTab === 'login' ? 'Hoş Geldiniz' : 'Hesap Oluşturun'}
+                {activeTab === 'login' ? t('auth.welcome') : t('auth.createAccount')}
               </Typography>
 
               {activeTab === 'login' && (
                 <View style={styles.mockLoginContainer}>
                   <Typography variant="body" style={styles.mockLoginTitle}>
-                    Doğrudan giriş yapabilirsiniz:
+                    {t('auth.directLogin')}
                   </Typography>
                   {mockUsers.map((user: any, index: any) => (
                     <TouchableOpacity
@@ -223,7 +225,7 @@ export const AuthScreen = () => {
                   {/* Username Input */}
                   <View style={styles.inputContainer}>
                     <Typography variant="body" style={styles.inputLabel}>
-                      Kullanıcı Adı
+                      {t('auth.username')}
                     </Typography>
 
                     <TextInput
@@ -238,7 +240,7 @@ export const AuthScreen = () => {
                       }
                       onFocus={() => setFocusedInput('username')}
                       onBlur={() => setFocusedInput(null)}
-                      placeholder="Kullanıcı adınızı giriniz"
+                      placeholder={t('auth.usernamePlaceholder')}
                       placeholderTextColor={colors.neutral[400]}
                       autoCapitalize="none"
                       autoCorrect={false}
@@ -249,7 +251,7 @@ export const AuthScreen = () => {
                   {/* Password Input */}
                   <View style={styles.inputContainer}>
                     <Typography variant="body" style={styles.inputLabel}>
-                      Şifre
+                      {t('auth.password')}
                     </Typography>
                     <TextInput
                       style={[
@@ -263,7 +265,7 @@ export const AuthScreen = () => {
                       }
                       onFocus={() => setFocusedInput('password')}
                       onBlur={() => setFocusedInput(null)}
-                      placeholder="Şifrenizi giriniz"
+                      placeholder={t('auth.passwordPlaceholder')}
                       placeholderTextColor={colors.neutral[400]}
                       secureTextEntry={!showPassword}
                       autoCapitalize="none"
@@ -293,7 +295,7 @@ export const AuthScreen = () => {
                   {/* Register Form */}
                   <View style={styles.inputContainer}>
                     <Typography variant="body" style={styles.inputLabel}>
-                      Kullanıcı Adı *
+                      {t('auth.username')} {t('auth.required')}
                     </Typography>
                     <TextInput
                       style={[
@@ -307,7 +309,7 @@ export const AuthScreen = () => {
                       }
                       onFocus={() => setFocusedInput('registerUsername')}
                       onBlur={() => setFocusedInput(null)}
-                      placeholder="Kullanıcı adınızı giriniz"
+                      placeholder={t('auth.usernamePlaceholder')}
                       placeholderTextColor={colors.neutral[400]}
                       autoCapitalize="none"
                       autoCorrect={false}
@@ -317,7 +319,7 @@ export const AuthScreen = () => {
 
                   <View style={styles.inputContainer}>
                     <Typography variant="body" style={styles.inputLabel}>
-                      Email
+                      {t('auth.email')}
                     </Typography>
                     <TextInput
                       style={[
@@ -331,7 +333,7 @@ export const AuthScreen = () => {
                       }
                       onFocus={() => setFocusedInput('email')}
                       onBlur={() => setFocusedInput(null)}
-                      placeholder="Emailinizi giriniz"
+                      placeholder={t('auth.emailPlaceholder')}
                       placeholderTextColor={colors.neutral[400]}
                       autoCapitalize="none"
                       autoCorrect={false}
@@ -341,7 +343,7 @@ export const AuthScreen = () => {
 
                   <View style={styles.inputContainer}>
                     <Typography variant="body" style={styles.inputLabel}>
-                      Şifre *
+                      {t('auth.password')} {t('auth.required')}
                     </Typography>
                     <TextInput
                       style={[
@@ -355,7 +357,7 @@ export const AuthScreen = () => {
                       }
                       onFocus={() => setFocusedInput('registerPassword')}
                       onBlur={() => setFocusedInput(null)}
-                      placeholder="Şifrenizi giriniz (min 6 karakter)"
+                      placeholder={t('auth.passwordMinLength')}
                       placeholderTextColor={colors.neutral[400]}
                       secureTextEntry={!showPassword}
                       autoCapitalize="none"
@@ -377,7 +379,7 @@ export const AuthScreen = () => {
 
                   <View style={styles.inputContainer}>
                     <Typography variant="body" style={styles.inputLabel}>
-                      Şifre Tekrarı *
+                      {t('auth.confirmPassword')} {t('auth.required')}
                     </Typography>
                     <TextInput
                       style={[
@@ -398,7 +400,7 @@ export const AuthScreen = () => {
                       }
                       onFocus={() => setFocusedInput('confirmPassword')}
                       onBlur={() => setFocusedInput(null)}
-                      placeholder="Şifrenizi tekrar giriniz"
+                      placeholder={t('auth.confirmPasswordPlaceholder')}
                       placeholderTextColor={colors.neutral[400]}
                       secureTextEntry={!showPassword}
                       autoCapitalize="none"
@@ -419,7 +421,7 @@ export const AuthScreen = () => {
                     {registerData.password !== registerData.confirmPassword &&
                       registerData.confirmPassword.length > 0 && (
                         <Typography variant="caption" style={styles.errorText}>
-                          Şifreler eşleşmiyor
+                          {t('auth.passwordMismatch')}
                         </Typography>
                       )}
                   </View>
@@ -433,7 +435,7 @@ export const AuthScreen = () => {
               )}
 
               <PrimaryButton
-                title={activeTab === 'login' ? 'Giriş Yap' : 'Hesap Oluştur'}
+                title={activeTab === 'login' ? t('auth.login') : t('auth.createAccountButton')}
                 disabled={
                   activeTab === 'login'
                     ? isLoginLoading ||

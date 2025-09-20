@@ -1,13 +1,15 @@
 import { Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { CartScreen, CategoriesScreen, HomeScreen, ProfileScreen } from '../screens';
+import { useTranslation } from 'react-i18next';
+import { CartScreen, HomeScreen, ProfileScreen } from '../screens';
 import { useAppSelector } from '../store/hooks';
 
 const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
+  const { t } = useTranslation();
   const { itemCount } = useAppSelector(state => state.cart);
-  
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -34,27 +36,18 @@ export const TabNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarLabel: 'Ana Sayfa',
+          tabBarLabel: t('navigation.home'),
           tabBarIcon: ({ size }) => (
             <Text style={{ fontSize: size * 0.8 }}>🏠</Text>
           ),
         }}
       />
-      <Tab.Screen
-        name="Categories"
-        component={CategoriesScreen}
-        options={{
-          tabBarLabel: 'Kategoriler',
-          tabBarIcon: ({ size }) => (
-            <Text style={{ fontSize: size * 0.8 }}>📂</Text>
-          ),
-        }}
-      />
+
       <Tab.Screen
         name="Cart"
         component={CartScreen}
         options={{
-          tabBarLabel: 'Sepet',
+          tabBarLabel: t('navigation.cart'),
           tabBarIcon: ({ size }) => (
             <Text style={{ fontSize: size * 0.8 }}>🛒</Text>
           ),
@@ -65,7 +58,7 @@ export const TabNavigator = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarLabel: 'Profil',
+          tabBarLabel: t('navigation.profile'),
           tabBarIcon: ({ size }) => (
             <Text style={{ fontSize: size * 0.8 }}>👤</Text>
           ),

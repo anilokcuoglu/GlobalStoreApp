@@ -7,12 +7,14 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { Typography } from '../../components';
 import { colors } from '../../constants/theme';
 import { StorageService } from '../../utils/storage';
 import { styles } from './OrdersScreen.styles';
 
 export const OrdersScreen: React.FC = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const [orders, setOrders] = useState<any[]>([]);
@@ -69,11 +71,11 @@ export const OrdersScreen: React.FC = () => {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'Tamamlandı';
+        return t('orders.statuses.completed');
       case 'processing':
-        return 'Hazırlanıyor';
+        return t('orders.statuses.processing');
       case 'cancelled':
-        return 'İptal Edildi';
+        return t('orders.statuses.cancelled');
       default:
         return status;
     }
@@ -104,15 +106,15 @@ export const OrdersScreen: React.FC = () => {
       <View style={styles.summaryContainer}>
         <View style={styles.summaryRow}>
           <Typography variant="body" style={styles.summaryLabel}>
-            Ürün Sayısı:
+            {t('orders.productCount')}:
           </Typography>
           <Typography variant="body" style={styles.summaryValue}>
-            {order.items.length} ürün
+            {order.items.length} {t('product.quantity')}
           </Typography>
         </View>
         <View style={styles.summaryRow}>
           <Typography variant="body" style={styles.summaryLabel}>
-            Toplam Tutar:
+            {t('orders.totalAmount')}:
           </Typography>
           <Typography variant="body" style={styles.summaryValue}>
             ${(order.totalAmount || 0).toFixed(2)}
@@ -133,10 +135,10 @@ export const OrdersScreen: React.FC = () => {
     <View style={styles.emptyContainer}>
       <Typography style={styles.emptyIcon}>📦</Typography>
       <Typography variant="h2" style={styles.emptyTitle}>
-        Henüz siparişiniz yok
+        {t('orders.empty')}
       </Typography>
       <Typography variant="body" style={styles.emptySubtitle}>
-        İlk siparişinizi vermek için ürünleri sepete ekleyin ve ödeme yapın
+        {t('orders.emptyMessage')}
       </Typography>
     </View>
   );
@@ -154,7 +156,7 @@ export const OrdersScreen: React.FC = () => {
           </Typography>
         </TouchableOpacity>
         <Typography variant="h3" style={styles.headerTitle}>
-          Siparişlerim
+          {t('orders.title')}
         </Typography>
         <View style={styles.headerSpacer} />
       </View>

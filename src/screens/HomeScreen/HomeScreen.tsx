@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Product } from '../../types/product.types';
 import { ProductCard, Typography } from '../../components';
 import { styles } from './HomeScreen.styles.ts';
@@ -18,6 +19,7 @@ import { colors } from '../../constants/theme.ts';
 import GradientText from '../../components/molecules/GradientText/GradientText.tsx';
 
 export const HomeScreen = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { products, loading, error } = useAppSelector(state => state.products);
 
@@ -72,7 +74,7 @@ export const HomeScreen = () => {
       <View style={styles.searchInputContainer}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Ürün ara..."
+          placeholder={t('home.searchPlaceholder')}
           placeholderTextColor={colors.neutral[400]}
           value={searchQuery}
           onChangeText={query => handleSearch(query)}
@@ -97,7 +99,7 @@ export const HomeScreen = () => {
       {searchQuery.length > 0 && (
         <View style={styles.searchResultsInfo}>
           <Typography variant="body" style={styles.searchResultsText}>
-            {filteredProducts.length} ürün bulundu
+            {filteredProducts.length} {t('product.quantity')} bulundu
           </Typography>
         </View>
       )}
@@ -116,12 +118,12 @@ export const HomeScreen = () => {
   const renderEmptyState = () => (
     <View style={styles.emptyContainer}>
       <Typography variant="h3" style={styles.emptyTitle}>
-        {searchQuery ? 'Ürün bulunamadı' : 'Henüz ürün yok'}
+        {searchQuery ? t('home.emptyTitle') : t('home.emptyTitle')}
       </Typography>
       <Typography variant="body" style={styles.emptyText}>
         {searchQuery
-          ? `"${searchQuery}" için sonuç bulunamadı`
-          : 'Ürünler yükleniyor...'}
+          ? `"${searchQuery}" ${t('home.noResults')}`
+          : t('home.loading')}
       </Typography>
       {searchQuery && (
         <TouchableOpacity
@@ -129,7 +131,7 @@ export const HomeScreen = () => {
           onPress={clearSearch}
         >
           <Typography variant="body" style={styles.clearSearchButtonText}>
-            Aramayı Temizle
+            {t('home.clearSearch')}
           </Typography>
         </TouchableOpacity>
       )}
@@ -145,10 +147,10 @@ export const HomeScreen = () => {
         locations={[0, 1]}
         style={styles.title}
       >
-        Global Store
+        {t('auth.appName')}
       </GradientText>
       <Typography variant="body" style={styles.subtitle}>
-        Discover amazing products
+        {t('home.subtitle')}
       </Typography>
     </View>
   );
@@ -159,7 +161,7 @@ export const HomeScreen = () => {
         <View style={styles.centerContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
           <Typography variant="body" style={styles.loadingText}>
-            Loading products...
+            {t('home.loading')}
           </Typography>
         </View>
       </SafeAreaView>

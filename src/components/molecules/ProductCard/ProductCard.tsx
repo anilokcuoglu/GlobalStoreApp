@@ -1,5 +1,6 @@
 import { View, TouchableOpacity, Dimensions, Alert, ActivityIndicator } from 'react-native';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Product } from '../../../types/product.types';
 import { FastImage, Typography } from '../../atoms';
 import { styles } from './ProductCard.styles';
@@ -17,6 +18,7 @@ const { width: screenWidth } = Dimensions.get('window');
 const cardWidth = (screenWidth - 48) / 2; 
 
 export const ProductCard = ({ product, onPress }: ProductCardProps) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { items } = useAppSelector(state => state.cart);
   
@@ -44,12 +46,12 @@ export const ProductCard = ({ product, onPress }: ProductCardProps) => {
       setIsFavorite(newFavoriteStatus);
       
       if (newFavoriteStatus) {
-        Alert.alert('Başarılı', 'Ürün favorilere eklendi!');
+        Alert.alert(t('product.success'), t('product.addedToFavorites'));
       } else {
-        Alert.alert('Başarılı', 'Ürün favorilerden çıkarıldı!');
+        Alert.alert(t('product.success'), t('product.removedFromFavorites'));
       }
     } else {
-      Alert.alert('Hata', 'Favori işlemi başarısız oldu!');
+      Alert.alert(t('common.error'), t('product.favoriteError'));
     }
   };
   
@@ -72,10 +74,10 @@ export const ProductCard = ({ product, onPress }: ProductCardProps) => {
     setTimeout(() => {
       if (inCartQuantity > 0) {
         dispatch(updateQuantity({ productId: product.id, quantity: inCartQuantity + quantity }));
-        Alert.alert('Başarılı', `${quantity} adet ürün sepete eklendi!`);
+        Alert.alert(t('product.success'), `${quantity} ${t('product.addedToCartQuantity')}`);
       } else {
         dispatch(addToCart(product));
-        Alert.alert('Başarılı', 'Ürün sepete eklendi!');
+        Alert.alert(t('product.success'), t('product.addedToCart'));
       }
       setQuantity(1);
       setIsLoading(false);
@@ -168,7 +170,7 @@ export const ProductCard = ({ product, onPress }: ProductCardProps) => {
             🛒
           </Typography>
           <Typography variant="body" style={[styles.addToCartText, inCartQuantity > 0 && styles.addToCartTextActive]}>
-            {inCartQuantity > 0 ? `Sepette (${inCartQuantity})` : 'Sepete Ekle'}
+            {inCartQuantity > 0 ? `${t('product.inCart')} (${inCartQuantity})` : t('product.addToCart')}
           </Typography>
         </TouchableOpacity>
       </View>
