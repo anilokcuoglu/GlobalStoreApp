@@ -46,6 +46,10 @@ export const ProfileScreen = () => {
     (navigation as any).navigate('LanguageSelection');
   };
 
+  const handleCurrency = () => {
+    (navigation as any).navigate('CurrencySelection');
+  };
+
 
   const menuItems = [
     { 
@@ -65,6 +69,12 @@ export const ProfileScreen = () => {
       subtitle: t('profile.languageSubtitle'), 
       icon: '🌐',
       onPress: handleLanguage
+    },
+    { 
+      title: t('profile.currency'), 
+      subtitle: t('profile.currencySubtitle'), 
+      icon: '💱',
+      onPress: handleCurrency
     },
     { 
       title: t('profile.logout'), 

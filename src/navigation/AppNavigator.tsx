@@ -8,6 +8,7 @@ import PaymentScreen from '../screens/PaymentScreen';
 import PersonalInfoScreen from '../screens/PersonalInfoScreen';
 import OrdersScreen from '../screens/OrdersScreen';
 import LanguageSelectionScreen from '../screens/LanguageSelectionScreen';
+import CurrencySelectionScreen from '../screens/CurrencySelectionScreen/CurrencySelectionScreen';
 import { useAuth } from '../hooks/useAuth';
 import { colors } from '../constants/theme';
 
@@ -61,6 +62,13 @@ export const AppNavigator = () => {
             <Stack.Screen 
               name="LanguageSelection" 
               component={LanguageSelectionScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen 
+              name="CurrencySelection" 
+              component={CurrencySelectionScreen}
               options={{
                 headerShown: false,
               }}

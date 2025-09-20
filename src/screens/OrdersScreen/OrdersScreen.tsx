@@ -8,15 +8,18 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../store/hooks';
 import { Typography } from '../../components';
 import { colors } from '../../constants/theme';
 import { StorageService } from '../../utils/storage';
 import { styles } from './OrdersScreen.styles';
+import { convertPrice, formatPrice } from '../../utils/currency';
 
 export const OrdersScreen: React.FC = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const { selectedCurrency, exchangeRates } = useAppSelector((state) => state.currency);
   const [orders, setOrders] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -117,7 +120,7 @@ export const OrdersScreen: React.FC = () => {
             {t('orders.totalAmount')}:
           </Typography>
           <Typography variant="body" style={styles.summaryValue}>
-            ${(order.totalAmount || 0).toFixed(2)}
+            {formatPrice(convertPrice(order.totalAmount || 0, selectedCurrency, exchangeRates), selectedCurrency)}
           </Typography>
         </View>
       </View>

@@ -103,7 +103,7 @@
     "clearCartConfirm": "Are you sure you want to remove all products from your cart?",
     "emptyCartWarning": "Your cart is empty.",
     "placeOrder": "Place Order",
-    "placeOrderConfirm": "Are you sure you want to pay $ for items?",
+    "placeOrderConfirm": "Are you sure you want to pay {{amount}} for items?",
     "selectUserWarning": "Please select a user to gift to.",
     "giftConfirm": "Are you sure you want to gift your cart to user?",
     "giftSuccessMessage": "Your cart has been gifted to user!",
@@ -120,6 +120,8 @@
     "ordersSubtitle": "View your order history",
     "language": "Language Selection",
     "languageSubtitle": "Change application language",
+    "currency": "Currency",
+    "currencySubtitle": "Change price display currency",
     "logout": "Logout",
     "logoutSubtitle": "Safely logout from your account",
     "version": "GlobalStoreApp v1.0.0"
@@ -204,12 +206,17 @@
     "orderNumber": "Your order number",
     "paymentProcessing": "Payment Processing..."
   },
-  "language": {
-    "title": "Language Selection",
-    "selectLanguage": "Select Language",
-    "turkish": "Türkçe",
-    "english": "English",
-    "current": "Current",
-    "changeSuccess": "Language changed successfully"
-  }
+    "language": {
+      "title": "Language Selection",
+      "selectLanguage": "Select Language",
+      "turkish": "Türkçe",
+      "english": "English",
+      "current": "Current",
+      "changeSuccess": "Language changed successfully"
+    },
+    "currency": {
+      "title": "Currency Selection",
+      "selectCurrency": "Select currency",
+      "changeSuccess": "Currency changed successfully"
+    }
 }

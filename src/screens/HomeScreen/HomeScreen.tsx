@@ -17,11 +17,13 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchProducts, clearError } from '../../store/slices/productsSlice';
 import { colors } from '../../constants/theme.ts';
 import GradientText from '../../components/molecules/GradientText/GradientText.tsx';
+import { convertPrice, formatPrice } from '../../utils/currency';
 
 export const HomeScreen = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { products, loading, error } = useAppSelector(state => state.products);
+  const { selectedCurrency, exchangeRates } = useAppSelector((state) => state.currency);
 
   // Search states
   const [searchQuery, setSearchQuery] = useState('');
@@ -110,7 +112,7 @@ export const HomeScreen = () => {
     <ProductCard
       product={item}
       onPress={() => {
-        Alert.alert(t('home.productSelected'), `${item.title} - $${item.price}`);
+        Alert.alert(t('home.productSelected'), `${item.title} - ${formatPrice(convertPrice(item.price, selectedCurrency, exchangeRates), selectedCurrency)}`);
       }}
     />
   );

@@ -10,7 +10,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { clearCart } from '../../store/slices/cartSlice';
 import { Typography } from '../../components';
 import PrimaryButton from '../../components/molecules/PrimaryButton/PrimaryButton';
@@ -18,6 +18,7 @@ import { colors } from '../../constants/theme';
 import { PaymentCard } from '../../types/payment.types';
 import { StorageService } from '../../utils/storage';
 import { styles } from './PaymentScreen.styles';
+import { convertPrice, formatPrice } from '../../utils/currency';
 
 export const PaymentScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -26,6 +27,7 @@ export const PaymentScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
   const dispatch = useAppDispatch();
   const { totalAmount, cartItems } = route.params as any;
+  const { selectedCurrency, exchangeRates } = useAppSelector((state) => state.currency);
 
   const [cardData, setCardData] = useState<PaymentCard>({
     cardNumber: '',
@@ -148,7 +150,7 @@ export const PaymentScreen: React.FC = () => {
       // Show success message
       Alert.alert(
         '🎉 ' + t('payment.success'),
-        `${t('payment.successMessage')}\n\n${t('payment.amount')}: $${totalAmount.toFixed(2)}\n\n${t('payment.orderNumber')}: ${orderNumber}`,
+        `${t('payment.successMessage')}\n\n${t('payment.amount')}: ${formatPrice(convertPrice(totalAmount, selectedCurrency, exchangeRates), selectedCurrency)}\n\n${t('payment.orderNumber')}: ${orderNumber}`,
         [
           {
             text: t('common.ok'),
@@ -202,7 +204,7 @@ export const PaymentScreen: React.FC = () => {
             {t('payment.title')}
           </Typography>
           <Typography variant="body" style={styles.subtitle}>
-            {t('payment.orderAmount')}: ${totalAmount.toFixed(2)}
+            {t('payment.orderAmount')}: {formatPrice(convertPrice(totalAmount, selectedCurrency, exchangeRates), selectedCurrency)}
           </Typography>
         </View>
 
@@ -335,7 +337,7 @@ export const PaymentScreen: React.FC = () => {
             <View style={[styles.summaryRow, styles.totalRow]}>
               <Typography variant="h3">{t('payment.total')}:</Typography>
               <Typography variant="h3" style={styles.totalAmount}>
-                ${totalAmount.toFixed(2)}
+                {formatPrice(convertPrice(totalAmount, selectedCurrency, exchangeRates), selectedCurrency)}
               </Typography>
             </View>
           </View>

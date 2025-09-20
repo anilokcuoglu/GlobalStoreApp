@@ -19,6 +19,7 @@ export const StorageKeys = {
   PAYMENT_CARDS: 'payment_cards',
   ORDERS: 'orders',
   SELECTED_LANGUAGE: 'selected_language',
+  SELECTED_CURRENCY: 'selected_currency',
 } as const;
 
 export const StorageService = {
@@ -224,5 +225,41 @@ export const StorageService = {
 
   removeSelectedLanguage: () => {
     storage.delete(StorageKeys.SELECTED_LANGUAGE);
+  },
+
+  // Currency preference functions
+  setSelectedCurrency: async (currencyCode: string) => {
+    try {
+      console.log('💱 Setting selected currency:', currencyCode);
+      await useFallbackStorage(
+        () => {
+          storage.set(StorageKeys.SELECTED_CURRENCY, currencyCode);
+          console.log('✅ Selected currency saved to MMKV successfully');
+        },
+        async () => {
+          await AsyncStorage.setItem(StorageKeys.SELECTED_CURRENCY, currencyCode);
+          console.log('✅ Selected currency saved to AsyncStorage successfully');
+        }
+      );
+    } catch (error) {
+      console.error('❌ Failed to save selected currency:', error);
+      throw error;
+    }
+  },
+
+  getSelectedCurrency: async (): Promise<string | undefined> => {
+    try {
+      return await useFallbackStorage(
+        () => storage.getString(StorageKeys.SELECTED_CURRENCY),
+        async () => await AsyncStorage.getItem(StorageKeys.SELECTED_CURRENCY)
+      );
+    } catch (error) {
+      console.error('❌ Failed to get selected currency:', error);
+      return undefined;
+    }
+  },
+
+  removeSelectedCurrency: () => {
+    storage.delete(StorageKeys.SELECTED_CURRENCY);
   },
 };

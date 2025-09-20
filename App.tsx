@@ -3,15 +3,17 @@
  * @format
  */
 
+import React, { useEffect } from 'react';
 import 'react-native-screens/native-stack';
 import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import './src/i18n'; // Import i18n configuration
 import { AppNavigator } from './src/navigation';
 import { store } from './src/store';
+import { loadCurrencyFromStorage } from './src/store/slices/currencySlice';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -23,6 +25,16 @@ const queryClient = new QueryClient({
   },
 });
 
+const AppWithCurrency = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadCurrencyFromStorage());
+  }, [dispatch]);
+
+  return <AppNavigator />;
+};
+
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -31,8 +43,10 @@ function App() {
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <SafeAreaProvider>
-            <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-            <AppNavigator />
+            <StatusBar
+              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            />
+            <AppWithCurrency />
           </SafeAreaProvider>
         </QueryClientProvider>
       </Provider>

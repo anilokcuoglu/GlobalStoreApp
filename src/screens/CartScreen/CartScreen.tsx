@@ -17,12 +17,14 @@ import {
 import { Typography, FastImage } from '../../components';
 import { usersApi } from '../../services/api/users';
 import { styles } from './CartScreen.styles';
+import { convertPrice, formatPrice } from '../../utils/currency';
 
 export const CartScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { items, total, itemCount } = useAppSelector(state => state.cart);
+  const { selectedCurrency, exchangeRates } = useAppSelector((state) => state.currency);
 
   // Bottom sheet state
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -102,10 +104,9 @@ export const CartScreen = () => {
 
     Alert.alert(
       t('cart.placeOrder'),
-      `${itemCount} ${t('cart.placeOrderConfirm').replace(
-        '$',
-        total.toFixed(2),
-      )}`,
+      `${itemCount} ${t('cart.placeOrderConfirm', { 
+        amount: formatPrice(convertPrice(total, selectedCurrency, exchangeRates), selectedCurrency)
+      })}`,
       [
         { text: t('common.cancel'), style: 'cancel' },
         {
@@ -186,7 +187,7 @@ export const CartScreen = () => {
         </Typography>
 
         <Typography variant="h3" style={styles.productPrice}>
-          ${item.product.price}
+          {formatPrice(convertPrice(item.product.price, selectedCurrency, exchangeRates), selectedCurrency)}
         </Typography>
 
         <View style={styles.quantityContainer}>
@@ -220,7 +221,7 @@ export const CartScreen = () => {
 
       <View style={styles.itemActions}>
         <Typography variant="h3" style={styles.itemTotal}>
-          ${(item.product.price * item.quantity).toFixed(2)}
+          {formatPrice(convertPrice(item.product.price * item.quantity, selectedCurrency, exchangeRates), selectedCurrency)}
         </Typography>
 
         <TouchableOpacity
@@ -281,7 +282,7 @@ export const CartScreen = () => {
               {t('cart.totalAmount')}:
             </Typography>
             <Typography variant="h1" style={styles.totalAmount}>
-              ${total.toFixed(2)}
+              {formatPrice(convertPrice(total, selectedCurrency, exchangeRates), selectedCurrency)}
             </Typography>
           </View>
         </View>

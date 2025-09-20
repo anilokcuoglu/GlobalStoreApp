@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { addToCart, updateQuantity } from '../../../store/slices/cartSlice';
 import { FavoritesService } from '../../../utils/favorites';
 import { colors } from '../../../constants/theme';
+import { convertPrice, formatPrice } from '../../../utils/currency';
 
 interface ProductCardProps {
   product: Product;
@@ -21,6 +22,7 @@ export const ProductCard = ({ product, onPress }: ProductCardProps) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { items } = useAppSelector(state => state.cart);
+  const { selectedCurrency, exchangeRates } = useAppSelector((state) => state.currency);
   
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -177,7 +179,7 @@ export const ProductCard = ({ product, onPress }: ProductCardProps) => {
 
       <View style={styles.priceContainer}>
         <Typography variant="h3" style={styles.price}>
-          ${product.price}
+          {formatPrice(convertPrice(product.price, selectedCurrency, exchangeRates), selectedCurrency)}
         </Typography>
       </View>
 

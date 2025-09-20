@@ -103,7 +103,7 @@
     "clearCartConfirm": "Tüm ürünleri sepetten kaldırmak istediğinizden emin misiniz?",
     "emptyCartWarning": "Sepetinizde ürün bulunmuyor.",
     "placeOrder": "Sipariş Ver",
-    "placeOrderConfirm": "ürün için $ ödeme yapmak istediğinizden emin misiniz?",
+    "placeOrderConfirm": "ürün için {{amount}} ödeme yapmak istediğinizden emin misiniz?",
     "selectUserWarning": "Lütfen hediye edilecek kullanıcıyı seçin.",
     "giftConfirm": "Sepetinizi kullanıcısına hediye etmek istediğinizden emin misiniz?",
     "giftSuccessMessage": "Sepetiniz kullanıcısına hediye edildi!",
@@ -120,6 +120,8 @@
     "ordersSubtitle": "Geçmiş siparişlerinizi görüntüleyin",
     "language": "Dil Seçimi",
     "languageSubtitle": "Uygulama dilini değiştirin",
+    "currency": "Para Birimi",
+    "currencySubtitle": "Fiyat görüntüleme para birimini değiştirin",
     "logout": "Çıkış Yap",
     "logoutSubtitle": "Hesabınızdan güvenli çıkış yapın",
     "version": "GlobalStoreApp v1.0.0"
@@ -208,6 +210,11 @@
       "english": "English",
       "current": "Mevcut",
       "changeSuccess": "Dil başarıyla değiştirildi"
+    },
+    "currency": {
+      "title": "Para Birimi Seçimi",
+      "selectCurrency": "Para birimi seçin",
+      "changeSuccess": "Para birimi başarıyla değiştirildi"
     }
   }
 }
