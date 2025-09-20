@@ -105,7 +105,7 @@ export const PaymentScreen: React.FC = () => {
 
   const handlePayment = async () => {
     if (!validateForm()) {
-      Alert.alert(t('common.error'), 'Lütfen tüm alanları doğru şekilde doldurun.');
+      Alert.alert(t('common.error'), t('payment.fillAllFieldsError'));
       return;
     }
 
@@ -148,10 +148,10 @@ export const PaymentScreen: React.FC = () => {
       // Show success message
       Alert.alert(
         '🎉 ' + t('payment.success'),
-        `${t('payment.successMessage')}\n\nTutar: $${totalAmount.toFixed(2)}\n\nSipariş numaranız: ${orderNumber}`,
+        `${t('payment.successMessage')}\n\n${t('payment.amount')}: $${totalAmount.toFixed(2)}\n\n${t('payment.orderNumber')}: ${orderNumber}`,
         [
           {
-            text: 'Tamam',
+            text: t('common.ok'),
             onPress: () => {
               // Clear cart and go back to main app
               dispatch(clearCart());
@@ -358,7 +358,7 @@ export const PaymentScreen: React.FC = () => {
             <View style={styles.processingCard}>
               <ActivityIndicator size="large" color={colors.primary} />
               <Typography variant="body" style={styles.processingText}>
-                Ödeme işleniyor...
+                {t('payment.paymentProcessing')}
               </Typography>
             </View>
           </View>

@@ -8,7 +8,11 @@
     "save": "Kaydet",
     "delete": "Sil",
     "edit": "Düzenle",
-    "back": "Geri"
+    "back": "Geri",
+    "great": "Harika!",
+    "remove": "Kaldır",
+    "clear": "Temizle",
+    "ok": "Tamam"
   },
   "auth": {
     "login": "Giriş Yap",
@@ -75,6 +79,8 @@
     "clearSearch": "Temizle",
     "searching": "Aranıyor...",
     "noResults": "için sonuç bulunamadı",
+    "found": "bulundu",
+    "productSelected": "Ürün Seçildi",
     "emptyTitle": "Ürün Bulunamadı",
     "emptyText": "Şu anda görüntülenecek ürün yok",
     "loading": "Yükleniyor...",
@@ -126,6 +132,9 @@
     "updating": "Güncelleniyor...",
     "updateSuccess": "Kişisel bilgileriniz başarıyla güncellendi.",
     "updateError": "Bilgiler güncellenirken bir hata oluştu.",
+    "fillAllFieldsError": "Lütfen tüm alanları doğru şekilde doldurun.",
+    "errorsTitle": "Hatalar:",
+    "ok": "Tamam",
     "validation": {
       "usernameRequired": "Kullanıcı adı gerekli",
       "emailRequired": "E-posta adresi gerekli",
@@ -153,48 +162,52 @@
       "completed": "Tamamlandı",
       "processing": "Hazırlanıyor",
       "cancelled": "İptal Edildi"
-    }
-  },
-  "payment": {
-    "cardNumber": "Kart Numarası",
-    "cardHolder": "Kart Sahibi",
-    "expiryDate": "Son Kullanma Tarihi",
-    "month": "Ay",
-    "year": "Yıl",
-    "cvv": "CVV",
-    "orderSummary": "Sipariş Özeti",
-    "shipping": "Kargo",
-    "freeShipping": "Ücretsiz",
-    "total": "Toplam",
-    "validation": {
-      "cardNumberRequired": "Kart numarası gerekli",
-      "cardNumberInvalid": "Kart numarası 16 haneli olmalıdır",
-      "cardHolderRequired": "Kart sahibi adı gerekli",
-      "expiryRequired": "Son kullanma tarihi gerekli",
-      "expiryInvalid": "Geçerli bir tarih girin",
-      "cvvRequired": "CVV gerekli",
-      "cvvInvalid": "CVV 3 haneli olmalıdır"
     },
-    "title": "Ödeme",
-    "orderAmount": "Sipariş tutarı",
-    "cardInfo": "Kart Bilgileri",
-    "cardNumberPlaceholder": "1234 5678 9012 3456",
-    "cardHolderPlaceholder": "AD SOYAD",
-    "monthPlaceholder": "AA",
-    "yearPlaceholder": "YY",
-    "cvvPlaceholder": "123",
-    "completePayment": "Ödemeyi Tamamla",
-    "processing": "İşleniyor...",
-    "success": "Ödeme Başarılı!",
-    "successMessage": "Siparişiniz başarıyla oluşturuldu.",
-    "error": "Ödeme işlemi sırasında bir hata oluştu."
-  },
-  "language": {
-    "title": "Dil Seçimi",
-    "selectLanguage": "Dil Seçin",
-    "turkish": "Türkçe",
-    "english": "English",
-    "current": "Mevcut",
-    "changeSuccess": "Dil başarıyla değiştirildi"
+    "payment": {
+      "cardNumber": "Kart Numarası",
+      "cardHolder": "Kart Sahibi",
+      "expiryDate": "Son Kullanma Tarihi",
+      "month": "Ay",
+      "year": "Yıl",
+      "cvv": "CVV",
+      "orderSummary": "Sipariş Özeti",
+      "shipping": "Kargo",
+      "freeShipping": "Ücretsiz",
+      "total": "Toplam",
+      "validation": {
+        "cardNumberRequired": "Kart numarası gerekli",
+        "cardNumberInvalid": "Kart numarası 16 haneli olmalıdır",
+        "cardHolderRequired": "Kart sahibi adı gerekli",
+        "expiryRequired": "Son kullanma tarihi gerekli",
+        "expiryInvalid": "Geçerli bir tarih girin",
+        "cvvRequired": "CVV gerekli",
+        "cvvInvalid": "CVV 3 haneli olmalıdır"
+      },
+      "title": "Ödeme",
+      "orderAmount": "Sipariş tutarı",
+      "cardInfo": "Kart Bilgileri",
+      "cardNumberPlaceholder": "1234 5678 9012 3456",
+      "cardHolderPlaceholder": "AD SOYAD",
+      "monthPlaceholder": "AA",
+      "yearPlaceholder": "YY",
+      "cvvPlaceholder": "123",
+      "completePayment": "Ödemeyi Tamamla",
+      "processing": "İşleniyor...",
+      "success": "Ödeme Başarılı!",
+      "successMessage": "Siparişiniz başarıyla oluşturuldu.",
+      "error": "Ödeme işlemi sırasında bir hata oluştu.",
+      "fillAllFieldsError": "Lütfen tüm alanları doğru şekilde doldurun.",
+      "amount": "Tutar",
+      "orderNumber": "Sipariş numaranız",
+      "paymentProcessing": "Ödeme İşleniyor..."
+    },
+    "language": {
+      "title": "Dil Seçimi",
+      "selectLanguage": "Dil Seçin",
+      "turkish": "Türkçe",
+      "english": "English",
+      "current": "Mevcut",
+      "changeSuccess": "Dil başarıyla değiştirildi"
+    }
   }
 }

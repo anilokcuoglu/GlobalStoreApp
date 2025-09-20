@@ -8,7 +8,11 @@
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit",
-    "back": "Back"
+    "back": "Back",
+    "great": "Great!",
+    "remove": "Remove",
+    "clear": "Clear",
+    "ok": "OK"
   },
   "auth": {
     "login": "Login",
@@ -66,8 +70,7 @@
     "addedToCart": "Product added to cart!",
     "addedToCartQuantity": "items added to cart!",
     "success": "Success",
-    "inCart": "In Cart",
-    "addToCart": "Add to Cart"
+    "inCart": "In Cart"
   },
   "home": {
     "title": "Home",
@@ -76,6 +79,8 @@
     "clearSearch": "Clear",
     "searching": "Searching...",
     "noResults": "No results found for",
+    "found": "found",
+    "productSelected": "Product Selected",
     "emptyTitle": "No Products Found",
     "emptyText": "There are no products to display at the moment",
     "loading": "Loading...",
@@ -123,6 +128,8 @@
     "title": "Personal Information",
     "basicInfo": "Basic Information",
     "username": "Username",
+    "title": "Personal Information",
+    "basicInfo": "Basic Information",
     "usernamePlaceholder": "Enter your username",
     "email": "Email",
     "emailPlaceholder": "example@email.com",
@@ -132,6 +139,9 @@
     "updating": "Updating...",
     "updateSuccess": "Your personal information has been successfully updated.",
     "updateError": "An error occurred while updating information.",
+    "fillAllFieldsError": "Please fill in all fields correctly.",
+    "errorsTitle": "Errors:",
+    "ok": "OK",
     "validation": {
       "usernameRequired": "Username is required",
       "emailRequired": "Email address is required",
@@ -157,16 +167,12 @@
     }
   },
   "payment": {
-    "title": "Payment",
     "cardNumber": "Card Number",
-    "cardNumberPlaceholder": "1234 5678 9012 3456",
     "cardHolder": "Cardholder",
-    "cardHolderPlaceholder": "FULL NAME",
     "expiryDate": "Expiry Date",
     "month": "Month",
     "year": "Year",
     "cvv": "CVV",
-
     "orderSummary": "Order Summary",
     "shipping": "Shipping",
     "freeShipping": "Free",
@@ -182,7 +188,9 @@
     },
     "orderAmount": "Order Amount",
     "cardInfo": "Card Information",
-
+    "title": "Payment",
+    "cardNumberPlaceholder": "1234 5678 9012 3456",
+    "cardHolderPlaceholder": "FULL NAME",
     "monthPlaceholder": "MM",
     "yearPlaceholder": "YY",
     "cvvPlaceholder": "123",
@@ -190,7 +198,11 @@
     "processing": "Processing...",
     "success": "Payment Successful!",
     "successMessage": "Your order has been successfully created.",
-    "error": "An error occurred during payment processing."
+    "error": "An error occurred during payment processing.",
+    "fillAllFieldsError": "Please fill in all fields correctly.",
+    "amount": "Amount",
+    "orderNumber": "Your order number",
+    "paymentProcessing": "Payment Processing..."
   },
   "language": {
     "title": "Language Selection",

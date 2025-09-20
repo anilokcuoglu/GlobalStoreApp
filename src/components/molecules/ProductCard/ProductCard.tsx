@@ -169,7 +169,7 @@ export const ProductCard = ({ product, onPress }: ProductCardProps) => {
           <Typography variant="body" style={[styles.addToCartIcon, inCartQuantity > 0 && styles.addToCartIconActive]}>
             🛒
           </Typography>
-          <Typography variant="body" style={[styles.addToCartText, inCartQuantity > 0 && styles.addToCartTextActive]}>
+          <Typography variant="body" style={[styles.addToCartText, inCartQuantity > 0 && styles.addToCartTextActive]} numberOfLines={1} ellipsizeMode="tail">
             {inCartQuantity > 0 ? `${t('product.inCart')} (${inCartQuantity})` : t('product.addToCart')}
           </Typography>
         </TouchableOpacity>

@@ -84,8 +84,8 @@ export const PersonalInfoScreen: React.FC = () => {
       const errorMessages = Object.values(errors).filter(Boolean);
       console.log('❌ Validation Failed:', errorMessages);
       Alert.alert(
-        'Hata',
-        `Lütfen tüm alanları doğru şekilde doldurun.\n\nHatalar:\n• ${errorMessages.join(
+        t('common.error'),
+        `${t('personalInfo.fillAllFieldsError')}\n\n${t('personalInfo.errorsTitle')}\n• ${errorMessages.join(
           '\n• ',
         )}`,
       );
@@ -98,11 +98,11 @@ export const PersonalInfoScreen: React.FC = () => {
       await usersApi.updateUser(0, userData);
 
       Alert.alert(
-        '🎉 Başarılı!',
-        'Kişisel bilgileriniz başarıyla güncellendi.',
+        '🎉 ' + t('common.success'),
+        t('personalInfo.updateSuccess'),
         [
           {
-            text: 'Tamam',
+            text: t('personalInfo.ok'),
             onPress: () => {
               (navigation as any).goBack();
             },
@@ -110,7 +110,7 @@ export const PersonalInfoScreen: React.FC = () => {
         ],
       );
     } catch (error) {
-      Alert.alert('Hata', 'Bilgiler güncellenirken bir hata oluştu.');
+      Alert.alert(t('common.error'), t('personalInfo.updateError'));
     } finally {
       setIsLoading(false);
     }

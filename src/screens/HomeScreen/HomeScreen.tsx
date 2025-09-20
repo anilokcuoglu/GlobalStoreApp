@@ -99,7 +99,7 @@ export const HomeScreen = () => {
       {searchQuery.length > 0 && (
         <View style={styles.searchResultsInfo}>
           <Typography variant="body" style={styles.searchResultsText}>
-            {filteredProducts.length} {t('product.quantity')} bulundu
+            {filteredProducts.length} {t('product.quantity')} {t('home.found')}
           </Typography>
         </View>
       )}
@@ -110,7 +110,7 @@ export const HomeScreen = () => {
     <ProductCard
       product={item}
       onPress={() => {
-        Alert.alert('Product Selected', `${item.title} - $${item.price}`);
+        Alert.alert(t('home.productSelected'), `${item.title} - $${item.price}`);
       }}
     />
   );
