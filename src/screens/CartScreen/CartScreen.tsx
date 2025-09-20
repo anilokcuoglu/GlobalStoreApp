@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import {
   View,
   FlatList,
@@ -6,14 +6,53 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import BottomSheet, { BottomSheetScrollView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import { useQuery } from '@tanstack/react-query';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { removeFromCart, updateQuantity, clearCart } from '../../store/slices/cartSlice';
 import { Typography, FastImage } from '../../components';
+import { usersApi } from '../../services/api/users';
 import { styles } from './CartScreen.styles';
 
 export const CartScreen = () => {
   const dispatch = useAppDispatch();
   const { items, total, itemCount } = useAppSelector(state => state.cart);
+  
+  // Bottom sheet state
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+  
+  // Users query
+  const { data: users = [], isLoading: isLoadingUsers } = useQuery({
+    queryKey: ['users'],
+    queryFn: usersApi.getAllUsers,
+  });
+  
+  // Bottom sheet callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+  
+  const openGiftSheet = useCallback(() => {
+    bottomSheetRef.current?.expand();
+  }, []);
+  
+  const closeGiftSheet = useCallback(() => {
+    bottomSheetRef.current?.close();
+  }, []);
+  
+  // Backdrop callback
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        onPress={closeGiftSheet}
+      />
+    ),
+    [closeGiftSheet]
+  );
 
   const handleQuantityChange = (productId: number, newQuantity: number) => {
     if (newQuantity <= 0) {
@@ -58,16 +97,53 @@ export const CartScreen = () => {
       ]
     );
   };
+  
+  const handleGiftToUser = () => {
+    if (!selectedUser) {
+      Alert.alert('Uyarı', 'Lütfen hediye edilecek kullanıcıyı seçin.');
+      return;
+    }
+    
+    Alert.alert(
+      'Hediye Et',
+      `Sepetinizi ${selectedUser.username} kullanıcısına hediye etmek istediğinizden emin misiniz?`,
+      [
+        { text: 'İptal', style: 'cancel' },
+        { text: 'Hediye Et', onPress: () => {
+          // Fake loading delay
+          setTimeout(() => {
+            Alert.alert(
+              '🎉 Başarılı!', 
+              `Sepetiniz ${selectedUser.username} kullanıcısına hediye edildi!\n\nHediye paketi kullanıcıya gönderildi.`,
+              [
+                { 
+                  text: 'Harika!', 
+                  onPress: () => {
+                    dispatch(clearCart());
+                    closeGiftSheet();
+                    setSelectedUser(null);
+                  }
+                }
+              ]
+            );
+          }, 1000);
+        }},
+      ]
+    );
+  };
 
   const renderCartItem = ({ item }: { item: any }) => (
     <View style={styles.cartItem}>
-      <FastImage
-        source={{ uri: item.product.image }}
-        style={styles.productImage}
-        width={80}
-        height={80}
-        borderRadius={8}
-      />
+      <View style={styles.imageContainer}>
+        <FastImage
+          source={{ uri: item.product.image }}
+          style={styles.productImage}
+          width={100}
+          height={100}
+          borderRadius={12}
+          resizeMode="contain"
+        />
+      </View>
       
       <View style={styles.itemDetails}>
         <Typography variant="body" style={styles.productTitle} numberOfLines={2}>
@@ -165,14 +241,23 @@ export const CartScreen = () => {
           </View>
         </View>
         
-        <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
-          <Typography variant="body" style={styles.checkoutButtonText}>
-            Sipariş Ver
-          </Typography>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.giftButton} onPress={openGiftSheet}>
+            <Typography variant="body" style={styles.giftButtonText}>
+              🎁 Hediye Et
+            </Typography>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
+            <Typography variant="body" style={styles.checkoutButtonText}>
+              Sipariş Ver
+            </Typography>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -186,6 +271,83 @@ export const CartScreen = () => {
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
       />
+      
+      {/* Bottom Sheet for Gift Selection */}
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={['50%', '75%']}
+        onChange={handleSheetChanges}
+        backgroundStyle={styles.bottomSheetBackground}
+        handleIndicatorStyle={styles.bottomSheetIndicator}
+        backdropComponent={renderBackdrop}
+        enablePanDownToClose={true}
+        enableOverDrag={false}
+        enableDynamicSizing={false}
+      >
+        <BottomSheetScrollView 
+          style={styles.bottomSheetContent}
+          contentContainerStyle={styles.bottomSheetScrollContent}
+        >
+          <Typography variant="h2" style={styles.bottomSheetTitle}>
+            Kullanıcı Seç
+          </Typography>
+          
+          <View style={styles.usersList}>
+            {isLoadingUsers ? (
+              <Typography variant="body" style={styles.loadingText}>
+                Kullanıcılar yükleniyor...
+              </Typography>
+            ) : (
+              users.map((user) => (
+                <TouchableOpacity
+                  key={user.id}
+                  style={[
+                    styles.userItem,
+                    selectedUser?.id === user.id && styles.selectedUserItem
+                  ]}
+                  onPress={() => setSelectedUser(user)}
+                >
+                  <View style={styles.userInfo}>
+                    <Typography variant="body" style={styles.userName}>
+                      {user.name?.firstname && user.name?.lastname 
+                        ? `${user.name.firstname} ${user.name.lastname}`
+                        : user.username
+                      }
+                    </Typography>
+                    <Typography variant="caption" style={styles.userEmail}>
+                      {user.email || `@${user.username}`}
+                    </Typography>
+                  </View>
+                  {selectedUser?.id === user.id && (
+                    <Typography variant="body" style={styles.selectedIcon}>
+                      ✓
+                    </Typography>
+                  )}
+                </TouchableOpacity>
+              ))
+            )}
+          </View>
+          
+          <View style={styles.bottomSheetActions}>
+            <TouchableOpacity style={styles.cancelButton} onPress={closeGiftSheet}>
+              <Typography variant="body" style={styles.cancelButtonText}>
+                İptal
+              </Typography>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={[styles.giftConfirmButton, !selectedUser && styles.disabledButton]} 
+              onPress={handleGiftToUser}
+              disabled={!selectedUser}
+            >
+              <Typography variant="body" style={styles.giftConfirmButtonText}>
+                Hediye Et
+              </Typography>
+            </TouchableOpacity>
+          </View>
+        </BottomSheetScrollView>
+      </BottomSheet>
     </SafeAreaView>
   );
 };
