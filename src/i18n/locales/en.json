@@ -1,0 +1,130 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "email": "Email",
+    "loginSuccess": "Login successful",
+    "logoutConfirm": "Are you sure you want to logout?",
+    "logoutError": "An error occurred during logout."
+  },
+  "navigation": {
+    "home": "Home",
+    "categories": "Categories",
+    "cart": "Cart",
+    "profile": "Profile"
+  },
+  "product": {
+    "addToCart": "Add to Cart",
+    "price": "Price",
+    "quantity": "Quantity",
+    "total": "Total",
+    "removeFromCart": "Remove from Cart"
+  },
+  "cart": {
+    "title": "My Cart",
+    "empty": "Your cart is empty",
+    "emptyMessage": "Add products to your cart to start shopping",
+    "checkout": "Checkout",
+    "gift": "Gift",
+    "giftTo": "Who should receive this gift?",
+    "giftSuccess": "Gift sent successfully!",
+    "totalAmount": "Total Amount"
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "personalInfoSubtitle": "Edit your profile information",
+    "orders": "My Orders",
+    "ordersSubtitle": "View your order history",
+    "language": "Language Selection",
+    "languageSubtitle": "Change application language",
+    "logout": "Logout",
+    "logoutSubtitle": "Safely logout from your account",
+    "version": "GlobalStoreApp v1.0.0"
+  },
+  "personalInfo": {
+    "title": "Personal Information",
+    "basicInfo": "Basic Information",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "email": "Email",
+    "emailPlaceholder": "example@email.com",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your new password",
+    "update": "Update Information",
+    "updating": "Updating...",
+    "updateSuccess": "Your personal information has been successfully updated.",
+    "updateError": "An error occurred while updating information.",
+    "validation": {
+      "usernameRequired": "Username is required",
+      "emailRequired": "Email address is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters"
+    }
+  },
+  "orders": {
+    "title": "My Orders",
+    "orderNumber": "Order No",
+    "date": "Date",
+    "status": "Status",
+    "productCount": "Product Count",
+    "totalAmount": "Total Amount",
+    "paymentMethod": "Payment Method",
+    "empty": "You don't have any orders yet",
+    "emptyMessage": "Add products to your cart and make a payment to place your first order",
+    "statuses": {
+      "completed": "Completed",
+      "processing": "Processing",
+      "cancelled": "Cancelled"
+    }
+  },
+  "payment": {
+    "title": "Payment",
+    "cardNumber": "Card Number",
+    "cardNumberPlaceholder": "1234 5678 9012 3456",
+    "cardHolder": "Cardholder",
+    "cardHolderPlaceholder": "FULL NAME",
+    "expiryDate": "Expiry Date",
+    "month": "Month",
+    "year": "Year",
+    "cvv": "CVV",
+    "cvvPlaceholder": "123",
+    "completePayment": "Complete Payment",
+    "processing": "Processing...",
+    "success": "Payment Successful!",
+    "successMessage": "Your order has been successfully created.",
+    "error": "An error occurred during payment processing.",
+    "validation": {
+      "cardNumberRequired": "Card number is required",
+      "cardNumberInvalid": "Card number must be 16 digits",
+      "cardHolderRequired": "Cardholder name is required",
+      "expiryRequired": "Expiry date is required",
+      "expiryInvalid": "Please enter a valid date",
+      "cvvRequired": "CVV is required",
+      "cvvInvalid": "CVV must be 3 digits"
+    }
+  },
+  "language": {
+    "title": "Language Selection",
+    "selectLanguage": "Select Language",
+    "turkish": "Türkçe",
+    "english": "English",
+    "current": "Current",
+    "changeSuccess": "Language changed successfully"
+  }
+}

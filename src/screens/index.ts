@@ -6,3 +6,4 @@ export * from './ProfileScreen';
 export * from './PaymentScreen';
 export * from './PersonalInfoScreen';
 export * from './OrdersScreen';
+export * from './LanguageSelectionScreen';

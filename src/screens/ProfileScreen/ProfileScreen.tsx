@@ -1,6 +1,7 @@
 import { View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { Typography } from '../../components';
 import { useAuth, useLogout } from '../../hooks/useAuth';
 import { styles } from './ProfileScreen.styles';
@@ -10,20 +11,21 @@ export const ProfileScreen = () => {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const logoutMutation = useLogout();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     Alert.alert(
-      'Çıkış Yap',
-      'Hesabınızdan çıkış yapmak istediğinize emin misiniz?',
+      t('auth.logout'),
+      t('auth.logoutConfirm'),
       [
-        { text: 'İptal', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Çıkış Yap',
+          text: t('auth.logout'),
           style: 'destructive',
           onPress: () => {
             logoutMutation.mutate(undefined, {
               onError: (_error) => {
-                Alert.alert('Hata', 'Çıkış yapılırken bir hata oluştu.');
+                Alert.alert(t('common.error'), t('auth.logoutError'));
               }
             });
           },
@@ -41,33 +43,32 @@ export const ProfileScreen = () => {
   };
 
   const handleLanguage = () => {
-    // TODO: Implement language selection
-    Alert.alert('Bilgi', 'Dil seçimi özelliği yakında!');
+    (navigation as any).navigate('LanguageSelection');
   };
 
 
   const menuItems = [
     { 
-      title: 'Kişisel Bilgiler', 
-      subtitle: 'Profil bilgilerinizi düzenleyin', 
+      title: t('profile.personalInfo'), 
+      subtitle: t('profile.personalInfoSubtitle'), 
       icon: '👤',
       onPress: handlePersonalInfo
     },
     { 
-      title: 'Siparişlerim', 
-      subtitle: 'Geçmiş siparişlerinizi görüntüleyin', 
+      title: t('profile.orders'), 
+      subtitle: t('profile.ordersSubtitle'), 
       icon: '📦',
       onPress: handleOrders
     },
     { 
-      title: 'Dil Seçimi', 
-      subtitle: 'Uygulama dilini değiştirin', 
+      title: t('profile.language'), 
+      subtitle: t('profile.languageSubtitle'), 
       icon: '🌐',
       onPress: handleLanguage
     },
     { 
-      title: 'Çıkış Yap', 
-      subtitle: 'Hesabınızdan güvenli çıkış yapın', 
+      title: t('profile.logout'), 
+      subtitle: t('profile.logoutSubtitle'), 
       icon: '🚪',
       onPress: handleLogout
     },
@@ -118,7 +119,7 @@ export const ProfileScreen = () => {
 
         <View style={styles.footer}>
           <Typography variant="caption" style={styles.versionText}>
-            GlobalStoreApp v1.0.0
+            {t('profile.version')}
           </Typography>
         </View>
       </ScrollView>

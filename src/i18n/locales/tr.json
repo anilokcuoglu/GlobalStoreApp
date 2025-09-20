@@ -1,0 +1,130 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "back": "Geri"
+  },
+  "auth": {
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "logout": "Çıkış Yap",
+    "username": "Kullanıcı Adı",
+    "password": "Şifre",
+    "email": "E-posta",
+    "loginSuccess": "Giriş başarılı",
+    "logoutConfirm": "Hesabınızdan çıkış yapmak istediğinize emin misiniz?",
+    "logoutError": "Çıkış yapılırken bir hata oluştu."
+  },
+  "navigation": {
+    "home": "Ana Sayfa",
+    "categories": "Kategoriler",
+    "cart": "Sepet",
+    "profile": "Profil"
+  },
+  "product": {
+    "addToCart": "Sepete Ekle",
+    "price": "Fiyat",
+    "quantity": "Adet",
+    "total": "Toplam",
+    "removeFromCart": "Sepetten Çıkar"
+  },
+  "cart": {
+    "title": "Sepetim",
+    "empty": "Sepetiniz boş",
+    "emptyMessage": "Sepetinize ürün ekleyerek alışverişe başlayın",
+    "checkout": "Ödeme Yap",
+    "gift": "Hediye Et",
+    "giftTo": "Kime hediye edilsin?",
+    "giftSuccess": "Hediye başarıyla gönderildi!",
+    "totalAmount": "Toplam Tutar"
+  },
+  "profile": {
+    "title": "Profil",
+    "personalInfo": "Kişisel Bilgiler",
+    "personalInfoSubtitle": "Profil bilgilerinizi düzenleyin",
+    "orders": "Siparişlerim",
+    "ordersSubtitle": "Geçmiş siparişlerinizi görüntüleyin",
+    "language": "Dil Seçimi",
+    "languageSubtitle": "Uygulama dilini değiştirin",
+    "logout": "Çıkış Yap",
+    "logoutSubtitle": "Hesabınızdan güvenli çıkış yapın",
+    "version": "GlobalStoreApp v1.0.0"
+  },
+  "personalInfo": {
+    "title": "Kişisel Bilgiler",
+    "basicInfo": "Temel Bilgiler",
+    "username": "Kullanıcı Adı",
+    "usernamePlaceholder": "Kullanıcı adınızı girin",
+    "email": "E-posta",
+    "emailPlaceholder": "ornek@email.com",
+    "password": "Şifre",
+    "passwordPlaceholder": "Yeni şifrenizi girin",
+    "update": "Bilgileri Güncelle",
+    "updating": "Güncelleniyor...",
+    "updateSuccess": "Kişisel bilgileriniz başarıyla güncellendi.",
+    "updateError": "Bilgiler güncellenirken bir hata oluştu.",
+    "validation": {
+      "usernameRequired": "Kullanıcı adı gerekli",
+      "emailRequired": "E-posta adresi gerekli",
+      "emailInvalid": "Geçerli bir e-posta adresi girin",
+      "passwordRequired": "Şifre gerekli",
+      "passwordMinLength": "Şifre en az 6 karakter olmalıdır"
+    }
+  },
+  "orders": {
+    "title": "Siparişlerim",
+    "orderNumber": "Sipariş No",
+    "date": "Tarih",
+    "status": "Durum",
+    "productCount": "Ürün Sayısı",
+    "totalAmount": "Toplam Tutar",
+    "paymentMethod": "Ödeme Yöntemi",
+    "empty": "Henüz siparişiniz yok",
+    "emptyMessage": "İlk siparişinizi vermek için ürünleri sepete ekleyin ve ödeme yapın",
+    "statuses": {
+      "completed": "Tamamlandı",
+      "processing": "Hazırlanıyor",
+      "cancelled": "İptal Edildi"
+    }
+  },
+  "payment": {
+    "title": "Ödeme",
+    "cardNumber": "Kart Numarası",
+    "cardNumberPlaceholder": "1234 5678 9012 3456",
+    "cardHolder": "Kart Sahibi",
+    "cardHolderPlaceholder": "AD SOYAD",
+    "expiryDate": "Son Kullanma Tarihi",
+    "month": "Ay",
+    "year": "Yıl",
+    "cvv": "CVV",
+    "cvvPlaceholder": "123",
+    "completePayment": "Ödemeyi Tamamla",
+    "processing": "İşleniyor...",
+    "success": "Ödeme Başarılı!",
+    "successMessage": "Siparişiniz başarıyla oluşturuldu.",
+    "error": "Ödeme işlemi sırasında bir hata oluştu.",
+    "validation": {
+      "cardNumberRequired": "Kart numarası gerekli",
+      "cardNumberInvalid": "Kart numarası 16 haneli olmalıdır",
+      "cardHolderRequired": "Kart sahibi adı gerekli",
+      "expiryRequired": "Son kullanma tarihi gerekli",
+      "expiryInvalid": "Geçerli bir tarih girin",
+      "cvvRequired": "CVV gerekli",
+      "cvvInvalid": "CVV 3 haneli olmalıdır"
+    }
+  },
+  "language": {
+    "title": "Dil Seçimi",
+    "selectLanguage": "Dil Seçin",
+    "turkish": "Türkçe",
+    "english": "English",
+    "current": "Mevcut",
+    "changeSuccess": "Dil başarıyla değiştirildi"
+  }
+}
