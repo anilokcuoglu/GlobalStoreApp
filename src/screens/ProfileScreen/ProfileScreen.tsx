@@ -1,10 +1,13 @@
 import { View, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { Typography } from '../../components';
 import { useAuth, useLogout } from '../../hooks/useAuth';
 import { styles } from './ProfileScreen.styles';
 
 export const ProfileScreen = () => {
+  const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const logoutMutation = useLogout();
 
@@ -19,7 +22,7 @@ export const ProfileScreen = () => {
           style: 'destructive',
           onPress: () => {
             logoutMutation.mutate(undefined, {
-              onError: (error) => {
+              onError: (_error) => {
                 Alert.alert('Hata', 'Çıkış yapılırken bir hata oluştu.');
               }
             });
@@ -29,15 +32,46 @@ export const ProfileScreen = () => {
     );
   };
 
+  const handlePersonalInfo = () => {
+    (navigation as any).navigate('PersonalInfo');
+  };
+
+  const handleOrders = () => {
+    // TODO: Implement orders screen
+    Alert.alert('Bilgi', 'Siparişlerim özelliği yakında!');
+  };
+
+  const handleLanguage = () => {
+    // TODO: Implement language selection
+    Alert.alert('Bilgi', 'Dil seçimi özelliği yakında!');
+  };
+
+
   const menuItems = [
-    { title: 'Kişisel Bilgiler', subtitle: 'Profil bilgilerinizi düzenleyin', icon: '👤' },
-    { title: 'Siparişlerim', subtitle: 'Geçmiş siparişlerinizi görüntüleyin', icon: '📦' },
-    { title: 'Adreslerim', subtitle: 'Teslimat adreslerinizi yönetin', icon: '📍' },
-    { title: 'Ödeme Yöntemleri', subtitle: 'Kart bilgilerinizi yönetin', icon: '💳' },
-    { title: 'Bildirimler', subtitle: 'Bildirim tercihlerinizi ayarlayın', icon: '🔔' },
-    { title: 'Dil Seçimi', subtitle: 'Uygulama dilini değiştirin', icon: '🌐' },
-    { title: 'Yardım', subtitle: 'Sık sorulan sorular ve destek', icon: '❓' },
-    { title: 'Çıkış Yap', subtitle: 'Hesabınızdan güvenli çıkış yapın', icon: '🚪' },
+    { 
+      title: 'Kişisel Bilgiler', 
+      subtitle: 'Profil bilgilerinizi düzenleyin', 
+      icon: '👤',
+      onPress: handlePersonalInfo
+    },
+    { 
+      title: 'Siparişlerim', 
+      subtitle: 'Geçmiş siparişlerinizi görüntüleyin', 
+      icon: '📦',
+      onPress: handleOrders
+    },
+    { 
+      title: 'Dil Seçimi', 
+      subtitle: 'Uygulama dilini değiştirin', 
+      icon: '🌐',
+      onPress: handleLanguage
+    },
+    { 
+      title: 'Çıkış Yap', 
+      subtitle: 'Hesabınızdan güvenli çıkış yapın', 
+      icon: '🚪',
+      onPress: handleLogout
+    },
   ];
 
   const renderMenuItem = (item: typeof menuItems[0], index: number) => (
@@ -45,13 +79,7 @@ export const ProfileScreen = () => {
       key={index} 
       style={styles.menuItem} 
       activeOpacity={0.7}
-      onPress={() => {
-        if (item.title === 'Çıkış Yap') {
-          handleLogout();
-        } else {
-          Alert.alert('Bilgi', `${item.title} özelliği yakında!`);
-        }
-      }}
+      onPress={item.onPress}
     >
       <View style={styles.menuIcon}>
         <Typography style={styles.iconText}>{item.icon}</Typography>
@@ -69,11 +97,13 @@ export const ProfileScreen = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View style={styles.profileImage}>
-            <Typography style={styles.profileInitial}>A</Typography>
+            <Typography style={styles.profileInitial}>
+              {(user?.username || 'Kullanıcı').charAt(0).toUpperCase()}
+            </Typography>
           </View>
           <Typography variant="h2" style={styles.profileName}>
             {user?.username || 'Kullanıcı'}
@@ -93,6 +123,6 @@ export const ProfileScreen = () => {
           </Typography>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };

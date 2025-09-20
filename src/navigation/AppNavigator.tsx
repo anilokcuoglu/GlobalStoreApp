@@ -5,6 +5,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { TabNavigator } from './TabNavigator';
 import { AuthScreen } from '../screens';
 import PaymentScreen from '../screens/PaymentScreen';
+import PersonalInfoScreen from '../screens/PersonalInfoScreen';
 import { useAuth } from '../hooks/useAuth';
 import { colors } from '../constants/theme';
 
@@ -37,6 +38,13 @@ export const AppNavigator = () => {
             <Stack.Screen 
               name="Payment" 
               component={PaymentScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen 
+              name="PersonalInfo" 
+              component={PersonalInfoScreen}
               options={{
                 headerShown: false,
               }}
