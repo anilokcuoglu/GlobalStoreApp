@@ -1,0 +1,2 @@
+export { FastImage } from './FastImage';
+
