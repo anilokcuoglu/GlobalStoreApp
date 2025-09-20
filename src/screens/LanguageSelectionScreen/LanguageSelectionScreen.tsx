@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import { View, TouchableOpacity, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +25,6 @@ export const LanguageSelectionScreen: React.FC = () => {
         const savedLanguage = await StorageService.getSelectedLanguage();
         if (savedLanguage) {
           setSelectedLanguage(savedLanguage);
-          console.log('🌐 Loaded saved language preference:', savedLanguage);
         }
       } catch (error) {
         console.error('❌ Failed to load saved language:', error);
@@ -50,19 +45,15 @@ export const LanguageSelectionScreen: React.FC = () => {
       // 2. i18n dilini değiştir
       await i18n.changeLanguage(languageCode);
       setSelectedLanguage(languageCode);
-      
-      Alert.alert(
-        t('language.changeSuccess'),
-        '',
-        [
-          {
-            text: t('common.confirm'),
-            onPress: () => {
-              (navigation as any).goBack();
-            },
+
+      Alert.alert(t('language.changeSuccess'), '', [
+        {
+          text: t('common.confirm'),
+          onPress: () => {
+            (navigation as any).goBack();
           },
-        ]
-      );
+        },
+      ]);
     } catch (error) {
       console.error('❌ Failed to change language:', error);
       Alert.alert(t('common.error'), 'Failed to change language');
@@ -74,7 +65,7 @@ export const LanguageSelectionScreen: React.FC = () => {
       key={language.code}
       style={[
         styles.languageItem,
-        selectedLanguage === language.code && styles.selectedLanguageItem
+        selectedLanguage === language.code && styles.selectedLanguageItem,
       ]}
       onPress={() => handleLanguageChange(language.code)}
       activeOpacity={0.7}
@@ -120,7 +111,7 @@ export const LanguageSelectionScreen: React.FC = () => {
           <Typography variant="h3" style={styles.sectionTitle}>
             {t('language.selectLanguage')}
           </Typography>
-          
+
           <View style={styles.languagesList}>
             {languages.map(renderLanguageItem)}
           </View>

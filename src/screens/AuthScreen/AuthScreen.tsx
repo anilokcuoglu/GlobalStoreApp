@@ -67,7 +67,6 @@ export const AuthScreen = () => {
         username: loginData.username.trim(),
         password: loginData.password.trim(),
       });
-      // Navigation will be handled by the navigation logic
     } catch (err: any) {
       Alert.alert(
         t('auth.loginFailed'),
@@ -106,7 +105,6 @@ export const AuthScreen = () => {
         password: registerData.password.trim(),
       });
 
-      // Register başarılı olduğunda login tab'ına geç
       Alert.alert(
         t('auth.registerSuccess'),
         t('auth.registerSuccessMessage'),
@@ -221,8 +219,7 @@ export const AuthScreen = () => {
 
               {activeTab === 'login' ? (
                 <>
-                  {/* Login Form */}
-                  {/* Username Input */}
+          
                   <View style={styles.inputContainer}>
                     <Typography variant="body" style={styles.inputLabel}>
                       {t('auth.username')}
@@ -248,7 +245,6 @@ export const AuthScreen = () => {
                     />
                   </View>
 
-                  {/* Password Input */}
                   <View style={styles.inputContainer}>
                     <Typography variant="body" style={styles.inputLabel}>
                       {t('auth.password')}
@@ -292,7 +288,6 @@ export const AuthScreen = () => {
                 </>
               ) : (
                 <>
-                  {/* Register Form */}
                   <View style={styles.inputContainer}>
                     <Typography variant="body" style={styles.inputLabel}>
                       {t('auth.username')} {t('auth.required')}

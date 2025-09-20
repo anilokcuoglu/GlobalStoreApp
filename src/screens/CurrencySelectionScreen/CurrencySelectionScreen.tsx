@@ -1,24 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from '../../components';
-import { styles } from './CurrencySelectionScreen.styles';
 import { Currency } from '../../store/slices/currencySlice';
 import { saveCurrencyToStorage } from '../../store/slices/currencySlice';
 import { RootState } from '../../store';
 import { getCurrencyInfo } from '../../utils/currency';
+import { styles } from './CurrencySelectionScreen.styles';
 
 const CurrencySelectionScreen = () => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { selectedCurrency, exchangeRates } = useSelector((state: RootState) => state.currency);
-  
-  const [currentCurrency, setCurrentCurrency] = useState<Currency>(selectedCurrency);
+  const { selectedCurrency } = useSelector(
+    (state: RootState) => state.currency,
+  );
+
+  const [currentCurrency, setCurrentCurrency] =
+    useState<Currency>(selectedCurrency);
 
   const currencies: Currency[] = ['USD', 'EUR', 'TRY'];
 
@@ -29,19 +32,15 @@ const CurrencySelectionScreen = () => {
   const handleSave = async () => {
     if (currentCurrency !== selectedCurrency) {
       try {
-        await dispatch(saveCurrencyToStorage(currentCurrency)).unwrap();
-        Alert.alert(
-          '🎉 ' + t('common.success'),
-          t('currency.changeSuccess'),
-          [
-            {
-              text: t('common.ok'),
-              onPress: () => {
-                (navigation as any).goBack();
-              },
+        await dispatch(saveCurrencyToStorage(currentCurrency) as any).unwrap();
+        Alert.alert('🎉 ' + t('common.success'), t('currency.changeSuccess'), [
+          {
+            text: t('common.ok'),
+            onPress: () => {
+              (navigation as any).goBack();
             },
-          ]
-        );
+          },
+        ]);
       } catch (error) {
         console.error('Failed to save currency:', error);
         Alert.alert(t('common.error'), 'Failed to save currency preference');
@@ -54,7 +53,7 @@ const CurrencySelectionScreen = () => {
   const renderCurrencyOption = (currency: Currency) => {
     const isSelected = currentCurrency === currency;
     const currencyInfo = getCurrencyInfo(currency);
-    
+
     return (
       <TouchableOpacity
         key={currency}
@@ -87,7 +86,7 @@ const CurrencySelectionScreen = () => {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.backButton}
           onPress={() => (navigation as any).goBack()}
           activeOpacity={0.7}

@@ -10,7 +10,6 @@ interface ProductsState {
   selectedProduct: Product | null;
 }
 
-// Initial state
 const initialState: ProductsState = {
   products: [],
   loading: false,
@@ -18,7 +17,6 @@ const initialState: ProductsState = {
   selectedProduct: null,
 };
 
-// Async Thunk - API çağrıları için
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
@@ -26,7 +24,6 @@ export const fetchProducts = createAsyncThunk(
   },
 );
 
-// Tek bir ürün getir
 export const fetchProductById = createAsyncThunk(
   'products/fetchProductById',
   async (id: number) => {
@@ -34,12 +31,10 @@ export const fetchProductById = createAsyncThunk(
   },
 );
 
-// Products Slice
 const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    // Synchronous actions
     clearError: state => {
       state.error = null;
     },
@@ -51,7 +46,6 @@ const productsSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    // fetchProducts için reducer'lar
     builder
       .addCase(fetchProducts.pending, state => {
         state.loading = true;
@@ -66,7 +60,6 @@ const productsSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Ürünler yüklenemedi';
       })
-      // fetchProductById için reducer'lar
       .addCase(fetchProductById.pending, state => {
         state.loading = true;
         state.error = null;
@@ -83,9 +76,7 @@ const productsSlice = createSlice({
   },
 });
 
-// Actions'ları export et
 export const { clearError, setSelectedProduct, clearProducts } =
   productsSlice.actions;
 
-// Reducer'ı export et
 export default productsSlice.reducer;

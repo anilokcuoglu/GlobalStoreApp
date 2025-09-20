@@ -17,7 +17,6 @@ const Stack = createNativeStackNavigator();
 export const AppNavigator = () => {
   const { isAuthenticated, loading } = useAuth();
 
-  // Loading screen
   if (loading) {
     return (
       <View style={{
@@ -35,7 +34,6 @@ export const AppNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isAuthenticated ? (
-          // User is authenticated - show main app
           <>
             <Stack.Screen name="MainApp" component={TabNavigator} />
             <Stack.Screen 
@@ -75,7 +73,6 @@ export const AppNavigator = () => {
             />
           </>
         ) : (
-          // User is not authenticated - show auth screen
           <Stack.Screen name="Auth" component={AuthScreen} />
         )}
       </Stack.Navigator>

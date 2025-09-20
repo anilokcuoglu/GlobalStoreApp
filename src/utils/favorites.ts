@@ -3,7 +3,6 @@ import { StorageService } from './storage';
 const FAVORITES_KEY = 'favorites';
 
 export const FavoritesService = {
-  // Get all favorite product IDs
   getFavorites: (): number[] => {
     try {
       const favorites = StorageService.getItem(FAVORITES_KEY);
@@ -17,7 +16,6 @@ export const FavoritesService = {
     }
   },
 
-  // Add product to favorites
   addToFavorites: (productId: number): boolean => {
     try {
       const favorites = FavoritesService.getFavorites();
@@ -34,7 +32,6 @@ export const FavoritesService = {
     }
   },
 
-  // Remove product from favorites
   removeFromFavorites: (productId: number): boolean => {
     try {
       const favorites = FavoritesService.getFavorites();
@@ -48,7 +45,6 @@ export const FavoritesService = {
     }
   },
 
-  // Check if product is favorite
   isFavorite: (productId: number): boolean => {
     try {
       const favorites = FavoritesService.getFavorites();
@@ -59,7 +55,6 @@ export const FavoritesService = {
     }
   },
 
-  // Toggle favorite status
   toggleFavorite: (productId: number): boolean => {
     try {
       const isFavorite = FavoritesService.isFavorite(productId);
@@ -74,7 +69,6 @@ export const FavoritesService = {
     }
   },
 
-  // Clear all favorites
   clearAllFavorites: (): boolean => {
     try {
       StorageService.removeItem(FAVORITES_KEY);

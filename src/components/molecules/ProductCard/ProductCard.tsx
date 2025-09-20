@@ -61,7 +61,6 @@ export const ProductCard = ({ product, onPress }: ProductCardProps) => {
     if (newQuantity >= 1 && newQuantity <= 99) {
       setIsLoading(true);
       
-      // Fake loading for better UX
       setTimeout(() => {
         setQuantity(newQuantity);
         setIsLoading(false);
@@ -72,7 +71,6 @@ export const ProductCard = ({ product, onPress }: ProductCardProps) => {
   const handleAddToCart = async () => {
     setIsLoading(true);
     
-    // Fake loading for better UX
     setTimeout(() => {
       if (inCartQuantity > 0) {
         dispatch(updateQuantity({ productId: product.id, quantity: inCartQuantity + quantity }));
@@ -130,7 +128,6 @@ export const ProductCard = ({ product, onPress }: ProductCardProps) => {
               </Typography>
             </View>
 
-            {/* Quantity Selector */}
             <View style={styles.quantityContainer}>
               <TouchableOpacity
                 style={styles.quantityButton}
@@ -160,7 +157,6 @@ export const ProductCard = ({ product, onPress }: ProductCardProps) => {
         </View>
       </TouchableOpacity>
 
-      {/* Full Width Add to Cart Button */}
       <View style={styles.topActionContainer}>
         <TouchableOpacity
           style={[styles.addToCartButton, inCartQuantity > 0 && styles.addToCartButtonActive]}

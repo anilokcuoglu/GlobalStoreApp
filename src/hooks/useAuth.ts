@@ -85,7 +85,6 @@ export const useLogin = () => {
   });
 };
 
-// Register mutation - Otomatik login yapmıyor
 export const useRegister = () => {
   return useMutation({
     mutationFn: async (credentials: RegisterCredentials) => {
@@ -127,7 +126,6 @@ export const useAuth = () => {
   const logoutMutation = useLogout();
 
   return {
-    // State
     user: authData?.user || null,
     isAuthenticated: authData?.isAuthenticated || false,
     loading:
@@ -141,12 +139,10 @@ export const useAuth = () => {
       logoutMutation.error?.message ||
       null,
 
-    // Actions
     login: loginMutation.mutateAsync,
     register: registerMutation.mutateAsync,
     logout: logoutMutation.mutateAsync,
 
-    // Status
     isLoginLoading: loginMutation.isPending,
     isRegisterLoading: registerMutation.isPending,
     isLogoutLoading: logoutMutation.isPending,

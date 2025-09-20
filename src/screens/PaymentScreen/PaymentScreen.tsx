@@ -17,8 +17,8 @@ import PrimaryButton from '../../components/molecules/PrimaryButton/PrimaryButto
 import { colors } from '../../constants/theme';
 import { PaymentCard } from '../../types/payment.types';
 import { StorageService } from '../../utils/storage';
-import { styles } from './PaymentScreen.styles';
 import { convertPrice, formatPrice } from '../../utils/currency';
+import { styles } from './PaymentScreen.styles';
 
 export const PaymentScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -114,14 +114,11 @@ export const PaymentScreen: React.FC = () => {
     setIsProcessing(true);
 
     try {
-      // Simulate payment processing
       await new Promise<void>(resolve => setTimeout(() => resolve(), 2000));
 
-      // Generate order number
       const orderNumber = `#${Math.floor(Math.random() * 1000000)}`;
       const orderDate = new Date().toISOString();
 
-      // Create order object
       const order = {
         id: Date.now().toString(),
         orderNumber,
@@ -137,17 +134,14 @@ export const PaymentScreen: React.FC = () => {
         },
       };
 
-      // Save order to storage
       await StorageService.addOrder(order);
 
-      // Save payment card to storage (optional)
       await StorageService.addPaymentCard({
         ...cardData,
         lastUsed: orderDate,
         isDefault: true,
       });
 
-      // Show success message
       Alert.alert(
         '🎉 ' + t('payment.success'),
         `${t('payment.successMessage')}\n\n${t('payment.amount')}: ${formatPrice(convertPrice(totalAmount, selectedCurrency, exchangeRates), selectedCurrency)}\n\n${t('payment.orderNumber')}: ${orderNumber}`,
@@ -155,7 +149,6 @@ export const PaymentScreen: React.FC = () => {
           {
             text: t('common.ok'),
             onPress: () => {
-              // Clear cart and go back to main app
               dispatch(clearCart());
               (navigation as any).navigate('MainApp');
             },
@@ -176,7 +169,6 @@ export const PaymentScreen: React.FC = () => {
     
     setCardData(prev => ({ ...prev, [field]: value }));
     
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }));
     }
@@ -184,7 +176,6 @@ export const PaymentScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      {/* Custom Header */}
       <View style={styles.customHeader}>
         <TouchableOpacity 
           style={styles.backButton} 

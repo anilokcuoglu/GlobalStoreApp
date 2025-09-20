@@ -12,8 +12,8 @@ import { useAppSelector } from '../../store/hooks';
 import { Typography } from '../../components';
 import { colors } from '../../constants/theme';
 import { StorageService } from '../../utils/storage';
-import { styles } from './OrdersScreen.styles';
 import { convertPrice, formatPrice } from '../../utils/currency';
+import { styles } from './OrdersScreen.styles';
 
 export const OrdersScreen: React.FC = () => {
   const { t } = useTranslation();

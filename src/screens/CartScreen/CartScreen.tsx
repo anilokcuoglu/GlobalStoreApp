@@ -26,17 +26,14 @@ export const CartScreen = () => {
   const { items, total, itemCount } = useAppSelector(state => state.cart);
   const { selectedCurrency, exchangeRates } = useAppSelector((state) => state.currency);
 
-  // Bottom sheet state
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [selectedUser, setSelectedUser] = useState<any>(null);
 
-  // Users query
   const { data: users = [], isLoading: isLoadingUsers } = useQuery({
     queryKey: ['users'],
     queryFn: usersApi.getAllUsers,
   });
 
-  // Bottom sheet callbacks
   const handleSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
   }, []);
@@ -136,7 +133,6 @@ export const CartScreen = () => {
         {
           text: t('cart.gift'),
           onPress: () => {
-            // Fake loading delay
             setTimeout(() => {
               Alert.alert(
                 '🎉 ' + t('common.success'),
@@ -320,7 +316,6 @@ export const CartScreen = () => {
         showsVerticalScrollIndicator={false}
       />
 
-      {/* Bottom Sheet for Gift Selection */}
       <BottomSheet
         ref={bottomSheetRef}
         index={-1}

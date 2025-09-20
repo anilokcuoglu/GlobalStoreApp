@@ -47,19 +47,16 @@ export const PersonalInfoScreen: React.FC = () => {
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    // Username validation
     if (!userData.username || !userData.username.trim()) {
       newErrors.username = 'Kullanıcı adı gerekli';
     }
 
-    // Email validation - daha esnek regex
     if (!userData.email || !userData.email.trim()) {
       newErrors.email = 'E-posta adresi gerekli';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email.trim())) {
       newErrors.email = 'Geçerli bir e-posta adresi girin';
     }
 
-    // Password validation
     if (!userData.password || !userData.password.trim()) {
       newErrors.password = 'Şifre gerekli';
     } else if (userData.password.length < 6) {
@@ -68,7 +65,6 @@ export const PersonalInfoScreen: React.FC = () => {
 
     setErrors(newErrors);
 
-    // Debug: Log validation results
     console.log('🔍 Validation Results:', {
       userData,
       errors: newErrors,
@@ -122,7 +118,6 @@ export const PersonalInfoScreen: React.FC = () => {
       [field]: value,
     }));
 
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => {
         const newErrors = { ...prev };
