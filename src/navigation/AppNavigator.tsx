@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, ActivityIndicator } from 'react-native';
 import { TabNavigator } from './TabNavigator';
 import { AuthScreen } from '../screens';
+import PaymentScreen from '../screens/PaymentScreen';
 import { useAuth } from '../hooks/useAuth';
 import { colors } from '../constants/theme';
 
@@ -31,7 +32,16 @@ export const AppNavigator = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isAuthenticated ? (
           // User is authenticated - show main app
-          <Stack.Screen name="MainApp" component={TabNavigator} />
+          <>
+            <Stack.Screen name="MainApp" component={TabNavigator} />
+            <Stack.Screen 
+              name="Payment" 
+              component={PaymentScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </>
         ) : (
           // User is not authenticated - show auth screen
           <Stack.Screen name="Auth" component={AuthScreen} />

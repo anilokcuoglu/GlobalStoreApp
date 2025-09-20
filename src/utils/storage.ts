@@ -16,6 +16,7 @@ const useFallbackStorage = async (operation: () => any, fallbackOperation: () =>
 export const StorageKeys = {
   AUTH_TOKEN: 'auth_token',
   USER_DATA: 'user_data',
+  PAYMENT_CARDS: 'payment_cards',
 } as const;
 
 export const StorageService = {
@@ -96,5 +97,55 @@ export const StorageService = {
   isLoggedIn: (): boolean => {
     const token = storage.getString(StorageKeys.AUTH_TOKEN);
     return !!token;
+  },
+
+  // Payment Cards Storage
+  setPaymentCards: async (cards: any[]) => {
+    try {
+      console.log('💳 Saving payment cards:', cards.length);
+      await useFallbackStorage(
+        () => {
+          storage.set(StorageKeys.PAYMENT_CARDS, JSON.stringify(cards));
+          console.log('✅ Payment cards saved to MMKV successfully');
+        },
+        async () => {
+          await AsyncStorage.setItem(StorageKeys.PAYMENT_CARDS, JSON.stringify(cards));
+          console.log('✅ Payment cards saved to AsyncStorage successfully');
+        }
+      );
+    } catch (error) {
+      console.error('❌ Failed to save payment cards:', error);
+      throw new Error(`Failed to save payment cards: ${error}`);
+    }
+  },
+
+  getPaymentCards: async (): Promise<any[]> => {
+    try {
+      return await useFallbackStorage(
+        () => {
+          const cards = storage.getString(StorageKeys.PAYMENT_CARDS);
+          return cards ? JSON.parse(cards) : [];
+        },
+        async () => {
+          const cards = await AsyncStorage.getItem(StorageKeys.PAYMENT_CARDS);
+          return cards ? JSON.parse(cards) : [];
+        }
+      );
+    } catch (error) {
+      console.error('❌ Failed to get payment cards:', error);
+      return [];
+    }
+  },
+
+  addPaymentCard: async (card: any) => {
+    try {
+      const existingCards = await StorageService.getPaymentCards();
+      const updatedCards = [...existingCards, card];
+      await StorageService.setPaymentCards(updatedCards);
+      console.log('✅ Payment card added successfully');
+    } catch (error) {
+      console.error('❌ Failed to add payment card:', error);
+      throw error;
+    }
   },
 };

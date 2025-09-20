@@ -6,6 +6,7 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import BottomSheet, { BottomSheetScrollView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useQuery } from '@tanstack/react-query';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -15,6 +16,7 @@ import { usersApi } from '../../services/api/users';
 import { styles } from './CartScreen.styles';
 
 export const CartScreen = () => {
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { items, total, itemCount } = useAppSelector(state => state.cart);
   
@@ -85,14 +87,21 @@ export const CartScreen = () => {
   };
 
   const handleCheckout = () => {
+    if (itemCount === 0) {
+      Alert.alert('Uyarı', 'Sepetinizde ürün bulunmuyor.');
+      return;
+    }
+
     Alert.alert(
       'Sipariş Ver',
       `Toplam ${itemCount} ürün için $${total.toFixed(2)} ödeme yapmak istediğinizden emin misiniz?`,
       [
         { text: 'İptal', style: 'cancel' },
         { text: 'Ödeme Yap', onPress: () => {
-          Alert.alert('Başarılı', 'Siparişiniz alındı!');
-          dispatch(clearCart());
+          (navigation as any).navigate('Payment', {
+            totalAmount: total,
+            cartItems: items,
+          });
         }},
       ]
     );

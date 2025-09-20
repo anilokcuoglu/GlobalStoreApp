@@ -67,5 +67,6 @@ const PrimaryButton = ({
   );
 };
 
+export { PrimaryButton };
 export default PrimaryButton;
 

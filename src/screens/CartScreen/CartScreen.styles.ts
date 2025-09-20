@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: colors.neutral.white,
+    backgroundColor: colors.neutral[50],
     borderBottomWidth: 1,
     borderBottomColor: colors.neutral[200],
   },
