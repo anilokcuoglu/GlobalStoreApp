@@ -10,17 +10,16 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider, useDispatch } from 'react-redux';
-import './src/i18n'; // Import i18n configuration
+import './src/i18n';
 import { AppNavigator } from './src/navigation';
 import { store } from './src/store';
 import { loadCurrencyFromStorage } from './src/store/slices/currencySlice';
 
-// Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 2,
-      staleTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: 5 * 60 * 1000,
     },
   },
 });
@@ -29,7 +28,7 @@ const AppWithCurrency = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadCurrencyFromStorage());
+    dispatch(loadCurrencyFromStorage() as any);
   }, [dispatch]);
 
   return <AppNavigator />;

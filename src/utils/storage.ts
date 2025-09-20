@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const storage = new MMKV();
 
-// Fallback storage for when MMKV fails
 const useFallbackStorage = async (operation: () => any, fallbackOperation: () => Promise<any>) => {
   try {
     return operation();
