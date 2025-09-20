@@ -18,6 +18,7 @@ export const StorageKeys = {
   USER_DATA: 'user_data',
   PAYMENT_CARDS: 'payment_cards',
   ORDERS: 'orders',
+  SELECTED_LANGUAGE: 'selected_language',
 } as const;
 
 export const StorageService = {
@@ -187,5 +188,41 @@ export const StorageService = {
       console.error('❌ Failed to add order:', error);
       throw error;
     }
+  },
+
+  // Language preference functions
+  setSelectedLanguage: async (languageCode: string) => {
+    try {
+      console.log('🌐 Setting selected language:', languageCode);
+      await useFallbackStorage(
+        () => {
+          storage.set(StorageKeys.SELECTED_LANGUAGE, languageCode);
+          console.log('✅ Selected language saved to MMKV successfully');
+        },
+        async () => {
+          await AsyncStorage.setItem(StorageKeys.SELECTED_LANGUAGE, languageCode);
+          console.log('✅ Selected language saved to AsyncStorage successfully');
+        }
+      );
+    } catch (error) {
+      console.error('❌ Failed to save selected language:', error);
+      throw error;
+    }
+  },
+
+  getSelectedLanguage: async (): Promise<string | undefined> => {
+    try {
+      return await useFallbackStorage(
+        () => storage.getString(StorageKeys.SELECTED_LANGUAGE),
+        async () => await AsyncStorage.getItem(StorageKeys.SELECTED_LANGUAGE)
+      );
+    } catch (error) {
+      console.error('❌ Failed to get selected language:', error);
+      return undefined;
+    }
+  },
+
+  removeSelectedLanguage: () => {
+    storage.delete(StorageKeys.SELECTED_LANGUAGE);
   },
 };

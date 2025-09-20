@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '../../components';
-import { colors } from '../../constants/theme';
+import { StorageService } from '../../utils/storage';
 import { styles } from './LanguageSelectionScreen.styles';
 
 export const LanguageSelectionScreen: React.FC = () => {
@@ -22,10 +22,32 @@ export const LanguageSelectionScreen: React.FC = () => {
     { code: 'en', name: t('language.english'), nativeName: 'English' },
   ];
 
+  // Load saved language preference on component mount
+  useEffect(() => {
+    const loadSavedLanguage = async () => {
+      try {
+        const savedLanguage = await StorageService.getSelectedLanguage();
+        if (savedLanguage) {
+          setSelectedLanguage(savedLanguage);
+          console.log('🌐 Loaded saved language preference:', savedLanguage);
+        }
+      } catch (error) {
+        console.error('❌ Failed to load saved language:', error);
+      }
+    };
+
+    loadSavedLanguage();
+  }, []);
+
   const handleLanguageChange = async (languageCode: string) => {
     if (languageCode === selectedLanguage) return;
 
     try {
+      // 1. MMKV'ye kaydet
+      await StorageService.setSelectedLanguage(languageCode);
+      console.log('✅ Language preference saved to MMKV:', languageCode);
+
+      // 2. i18n dilini değiştir
       await i18n.changeLanguage(languageCode);
       setSelectedLanguage(languageCode);
       
@@ -42,6 +64,7 @@ export const LanguageSelectionScreen: React.FC = () => {
         ]
       );
     } catch (error) {
+      console.error('❌ Failed to change language:', error);
       Alert.alert(t('common.error'), 'Failed to change language');
     }
   };
