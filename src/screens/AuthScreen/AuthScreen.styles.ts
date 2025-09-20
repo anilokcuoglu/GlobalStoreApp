@@ -246,7 +246,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mockLoginButtonText: {
-    color: '#ffffff',
+    color: '#red',
     fontSize: 12,
     fontWeight: '500',
   },

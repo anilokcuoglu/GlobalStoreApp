@@ -11,6 +11,7 @@
     "pod": "cd ios && pod install --repo-update && cd .."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-masked-view/masked-view": "^0.3.2",
     "@react-native/new-app-screen": "0.81.4",
     "@react-navigation/bottom-tabs": "^7.4.7",
@@ -19,6 +20,7 @@
     "@reduxjs/toolkit": "^2.9.0",
     "@tanstack/react-query": "^5.89.0",
     "i18next": "^25.5.2",
+    "lucide-react-native": "^0.544.0",
     "react": "19.1.0",
     "react-i18next": "^15.7.3",
     "react-native": "0.81.4",

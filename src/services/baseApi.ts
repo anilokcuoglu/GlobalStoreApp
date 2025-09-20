@@ -27,9 +27,24 @@ export const apiRequest = async <T>(
     });
 
     if (!response.ok) {
-      console.log(JSON.stringify(response));
+      console.log('❌ API Error Response:', {
+        status: response.status,
+        statusText: response.statusText,
+        url: url,
+        headers: Object.fromEntries(response.headers.entries())
+      });
 
-      throw new Error(`HTTP error! status: ${response.status}`);
+      // Try to get error message from response body
+      let errorMessage = `HTTP error! status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        console.log('❌ API Error Data:', errorData);
+        errorMessage = errorData.message || errorData.error || errorMessage;
+      } catch (parseError) {
+        console.log('❌ Could not parse error response:', parseError);
+      }
+
+      throw new Error(errorMessage);
     }
 
     // Parse and return the JSON response

@@ -15,7 +15,7 @@ export const FastImage = ({
   height,
   borderRadius,
   ...props
-}) => {
+}: FastImageProps) => {
   const imageStyle: ImageStyle[] = [];
 
   if (style) imageStyle.push(style);

@@ -1,10 +1,13 @@
 import { Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CartScreen, CategoriesScreen, HomeScreen, ProfileScreen } from '../screens';
+import { useAppSelector } from '../store/hooks';
 
 const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
+  const { itemCount } = useAppSelector(state => state.cart);
+  
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -55,7 +58,7 @@ export const TabNavigator = () => {
           tabBarIcon: ({ size }) => (
             <Text style={{ fontSize: size * 0.8 }}>🛒</Text>
           ),
-          tabBarBadge: undefined, // Sepet sayısı için badge eklenebilir
+          tabBarBadge: itemCount > 0 ? itemCount : undefined,
         }}
       />
       <Tab.Screen

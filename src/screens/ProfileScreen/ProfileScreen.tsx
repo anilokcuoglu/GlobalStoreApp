@@ -76,7 +76,7 @@ export const ProfileScreen = () => {
             <Typography style={styles.profileInitial}>A</Typography>
           </View>
           <Typography variant="h2" style={styles.profileName}>
-            {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.username || 'Kullanıcı'}
+            {user?.username || 'Kullanıcı'}
           </Typography>
           <Typography variant="body" style={styles.profileEmail}>
             {user?.email || 'user@example.com'}

@@ -43,7 +43,7 @@ export const AuthScreen = () => {
   useEffect(() => {}, [loginData.username, loginData.password]);
 
   const mockUsers = [
-    { username: 'mor_2314', password: '83r5^_', name: 'Test User 1' },
+    { username: 'donero', password: 'ewedon', name: 'Test User 3' },
   ];
 
   const handleMockLogin = (user: (typeof mockUsers)[0]) => {
@@ -251,33 +251,36 @@ export const AuthScreen = () => {
                     <Typography variant="body" style={styles.inputLabel}>
                       Şifre
                     </Typography>
-                      <TextInput
-                        style={[
-                          styles.input,
-                          focusedInput === 'password' && styles.inputFocused,
-                          error && styles.inputError,
-                        ]}
-                        value={loginData.password}
-                        onChangeText={text =>
-                          setLoginData(prev => ({ ...prev, password: text }))
-                        }
-                        onFocus={() => setFocusedInput('password')}
-                        onBlur={() => setFocusedInput(null)}
-                        placeholder="Şifrenizi giriniz"
-                        placeholderTextColor={colors.neutral[400]}
-                        secureTextEntry={!showPassword}
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        editable={!isLoginLoading}
-                      />
-                      <TouchableOpacity
-                        style={styles.passwordToggle}
-                        onPress={() => setShowPassword(prev => !prev)}
+                    <TextInput
+                      style={[
+                        styles.input,
+                        focusedInput === 'password' && styles.inputFocused,
+                        error && styles.inputError,
+                      ]}
+                      value={loginData.password}
+                      onChangeText={text =>
+                        setLoginData(prev => ({ ...prev, password: text }))
+                      }
+                      onFocus={() => setFocusedInput('password')}
+                      onBlur={() => setFocusedInput(null)}
+                      placeholder="Şifrenizi giriniz"
+                      placeholderTextColor={colors.neutral[400]}
+                      secureTextEntry={!showPassword}
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      editable={!isLoginLoading}
+                    />
+                    <TouchableOpacity
+                      style={styles.passwordToggle}
+                      onPress={() => setShowPassword(prev => !prev)}
+                    >
+                      <Typography
+                        variant="body"
+                        style={styles.passwordToggleText}
                       >
-                        <Typography variant="body" style={styles.passwordToggleText}>
-                          {showPassword ? '🙈' : '👁️'}
-                        </Typography>
-                      </TouchableOpacity>
+                        {showPassword ? '🙈' : '👁️'}
+                      </Typography>
+                    </TouchableOpacity>
                     {error && (
                       <Typography variant="caption" style={styles.errorText}>
                         {error}
@@ -406,7 +409,10 @@ export const AuthScreen = () => {
                       style={styles.passwordToggle}
                       onPress={() => setShowPassword(prev => !prev)}
                     >
-                      <Typography variant="body" style={styles.passwordToggleText}>
+                      <Typography
+                        variant="body"
+                        style={styles.passwordToggleText}
+                      >
                         {showPassword ? '🙈' : '👁️'}
                       </Typography>
                     </TouchableOpacity>

@@ -13,8 +13,8 @@ interface User {
 export const useAuthStatus = () => {
   return useQuery({
     queryKey: ['authStatus'],
-    queryFn: () => {
-      const token = StorageService.getAuthToken();
+    queryFn: async () => {
+      const token = await StorageService.getAuthToken();
       const userData = StorageService.getUserData();
 
       if (token && userData) {
@@ -42,21 +42,38 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: async (credentials: AuthCredentials) => {
-      const response = await authApi.login(credentials);
-
-      StorageService.setAuthToken(response.token);
-
-      const userData: User = {
+      console.log('🔐 Login attempt with credentials:', {
         username: credentials.username,
-        password: credentials.password,
-      };
+      });
 
-      StorageService.setUserData(userData);
+      try {
+        const response = await authApi.login(credentials);
+        console.log('✅ API Response received:', response);
 
-      return {
-        token: response.token,
-        user: userData,
-      };
+        const token = response.token;
+        if (!token) {
+          console.error('❌ No token found in API response:', response);
+          throw new Error('No token received from API');
+        }
+
+
+        await StorageService.setAuthToken(token);
+
+        const userData: User = {
+          username: credentials.username,
+          password: credentials.password,
+        };
+
+        StorageService.setUserData(userData);
+
+        return {
+          token: token,
+          user: userData,
+        };
+      } catch (error) {
+        console.error('❌ Login error:', error);
+        throw error;
+      }
     },
     onSuccess: data => {
       queryClient.setQueryData(['authStatus'], {

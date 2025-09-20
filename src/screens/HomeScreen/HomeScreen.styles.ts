@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors, shadows } from '../../constants/theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -13,22 +14,22 @@ export const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingVertical: 24,
     alignItems: 'center',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#1a1a1a',
+    color: colors.primary,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: colors.secondary_gray,
     textAlign: 'center',
   },
   listContainer: {
     paddingBottom: 20,
+    paddingTop: 16,
   },
   row: {
     justifyContent: 'space-between',
@@ -64,5 +65,102 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontStyle: 'italic',
   },
+  searchContainer: {
+    marginTop: 16,
+    paddingHorizontal: 16,
+  },
+  searchInputContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.neutral.white,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: colors.neutral[200],
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    ...shadows.medium,
+    minHeight: 56,
+    shadowColor: colors.primary[500],
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: colors.neutral[800],
+    paddingVertical: 0,
+    paddingRight: 12,
+    height: 24,
+    fontWeight: '500',
+  },
+  clearButton: {
+    marginLeft: 12,
+    borderRadius: 14,
+    backgroundColor: colors.neutral[100],
+    width: 28,
+    height: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.neutral[200],
+  },
+  clearButtonText: {
+    fontSize: 16,
+    color: colors.neutral[600],
+    fontWeight: '600',
+    alignSelf: 'center',
+  },
+  searchLoadingContainer: {
+    marginLeft: 8,
+    padding: 4,
+  },
+  searchResultsInfo: {
+    marginTop: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    backgroundColor: colors.neutral[50],
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+  },
+  searchResultsText: {
+    fontSize: 13,
+    color: colors.neutral[700],
+    fontWeight: '500',
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 40,
+    paddingVertical: 60,
+  },
+  emptyTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: colors.neutral[700],
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  emptyText: {
+    fontSize: 16,
+    color: colors.neutral[500],
+    textAlign: 'center',
+    lineHeight: 24,
+    marginBottom: 20,
+  },
+  clearSearchButton: {
+    backgroundColor: colors.primary[500],
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  clearSearchButtonText: {
+    color: colors.neutral.white,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  
 });
-
