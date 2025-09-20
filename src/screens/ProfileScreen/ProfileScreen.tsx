@@ -37,8 +37,7 @@ export const ProfileScreen = () => {
   };
 
   const handleOrders = () => {
-    // TODO: Implement orders screen
-    Alert.alert('Bilgi', 'Siparişlerim özelliği yakında!');
+    (navigation as any).navigate('Orders');
   };
 
   const handleLanguage = () => {

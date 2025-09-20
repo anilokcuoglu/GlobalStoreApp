@@ -113,17 +113,40 @@ export const PaymentScreen: React.FC = () => {
       // Simulate payment processing
       await new Promise<void>(resolve => setTimeout(() => resolve(), 2000));
 
-      // Save payment card to storage
+      // Generate order number
+      const orderNumber = `#${Math.floor(Math.random() * 1000000)}`;
+      const orderDate = new Date().toISOString();
+
+      // Create order object
+      const order = {
+        id: Date.now().toString(),
+        orderNumber,
+        date: orderDate,
+        totalAmount,
+        items: cartItems,
+        status: 'completed',
+        paymentMethod: `${cardData.cardNumber.slice(-4)} ending`,
+        shippingAddress: {
+          street: 'Sample Street',
+          city: 'Sample City',
+          zipcode: '12345',
+        },
+      };
+
+      // Save order to storage
+      await StorageService.addOrder(order);
+
+      // Save payment card to storage (optional)
       await StorageService.addPaymentCard({
         ...cardData,
-        lastUsed: new Date().toISOString(),
+        lastUsed: orderDate,
         isDefault: true,
       });
 
       // Show success message
       Alert.alert(
         '🎉 Ödeme Başarılı!',
-        `Siparişiniz başarıyla oluşturuldu.\n\nTutar: $${totalAmount.toFixed(2)}\n\nSipariş numaranız: #${Math.floor(Math.random() * 1000000)}`,
+        `Siparişiniz başarıyla oluşturuldu.\n\nTutar: $${totalAmount.toFixed(2)}\n\nSipariş numaranız: ${orderNumber}`,
         [
           {
             text: 'Tamam',

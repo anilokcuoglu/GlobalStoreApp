@@ -17,6 +17,7 @@ export const StorageKeys = {
   AUTH_TOKEN: 'auth_token',
   USER_DATA: 'user_data',
   PAYMENT_CARDS: 'payment_cards',
+  ORDERS: 'orders',
 } as const;
 
 export const StorageService = {
@@ -145,6 +146,45 @@ export const StorageService = {
       console.log('✅ Payment card added successfully');
     } catch (error) {
       console.error('❌ Failed to add payment card:', error);
+      throw error;
+    }
+  },
+
+  // Orders functions
+  getOrders: async (): Promise<any[]> => {
+    try {
+      const ordersJson = await useFallbackStorage(
+        () => storage.getString(StorageKeys.ORDERS),
+        () => AsyncStorage.getItem(StorageKeys.ORDERS)
+      );
+      
+      if (!ordersJson) {
+        return [];
+      }
+      
+      const orders = JSON.parse(ordersJson);
+      console.log('✅ Orders retrieved:', orders.length, 'orders');
+      return orders;
+    } catch (error) {
+      console.error('❌ Failed to get orders:', error);
+      return [];
+    }
+  },
+
+  addOrder: async (order: any) => {
+    try {
+      const existingOrders = await StorageService.getOrders();
+      const updatedOrders = [order, ...existingOrders];
+      
+      const ordersJson = JSON.stringify(updatedOrders);
+      await useFallbackStorage(
+        () => storage.set(StorageKeys.ORDERS, ordersJson),
+        () => AsyncStorage.setItem(StorageKeys.ORDERS, ordersJson)
+      );
+      
+      console.log('✅ Order added successfully');
+    } catch (error) {
+      console.error('❌ Failed to add order:', error);
       throw error;
     }
   },

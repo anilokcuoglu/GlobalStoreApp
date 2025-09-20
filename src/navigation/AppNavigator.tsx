@@ -6,6 +6,7 @@ import { TabNavigator } from './TabNavigator';
 import { AuthScreen } from '../screens';
 import PaymentScreen from '../screens/PaymentScreen';
 import PersonalInfoScreen from '../screens/PersonalInfoScreen';
+import OrdersScreen from '../screens/OrdersScreen';
 import { useAuth } from '../hooks/useAuth';
 import { colors } from '../constants/theme';
 
@@ -45,6 +46,13 @@ export const AppNavigator = () => {
             <Stack.Screen 
               name="PersonalInfo" 
               component={PersonalInfoScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen 
+              name="Orders" 
+              component={OrdersScreen}
               options={{
                 headerShown: false,
               }}
